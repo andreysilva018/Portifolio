@@ -209,7 +209,11 @@
       .proj-grid{grid-template-columns:1fr}
       .certs-grid{grid-template-columns:1fr}
     }
-  </style>
+  
+#hero{position:relative;overflow:hidden}
+#hero-matrix{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.18}
+.hero-inner,.container{position:relative;z-index:2}
+</style>
 </head>
 <body>
 
@@ -245,10 +249,8 @@
   <!-- =============================================
        HERO
   ============================================= -->
-  <canvas id="hero-matrix" aria-hidden="true"></canvas>
-
-    <!-- Matrix Rain — apenas na Hero -->
-    <canvas id="hero-matrix" aria-hidden="true"></canvas>
+  <section id="hero" aria-label="Apresentação">
+<canvas id="hero-matrix" aria-hidden="true"></canvas>
 
     <div class="container">
       <div class="hero-inner">
@@ -273,6 +275,8 @@
         </div>
       </div>
     </div>
+  </section>
+
   </section>
 
   <!-- =============================================
