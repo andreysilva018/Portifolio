@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,14 +16,53 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:#f9f8f6; --bg2:#f2f0ec; --surface:#fff; --border:#e4e2dc; --border2:#d0cdc6;
-      --text:#18181b; --text2:#52525b; --text3:#a1a1aa;
-      --green:#16a34a; --gl:#22c55e; --gbg:rgba(22,163,74,.08); --gbr:rgba(22,163,74,.25);
-      --mono:"JetBrains Mono",monospace; --sans:"Inter",sans-serif;
-      --r:10px; --rl:16px;
+      --bg:#f9f8f6;
+      --bg2:#f2f0ec;
+      --surface:#ffffff;
+      --surface2:#f6f4ef;
+      --border:#e4e2dc;
+      --border2:#d0cdc6;
+      --text:#18181b;
+      --text2:#52525b;
+      --text3:#a1a1aa;
+      --green:#16a34a;
+      --gl:#22c55e;
+      --gbg:rgba(22,163,74,.08);
+      --gbr:rgba(22,163,74,.25);
+      --hero-fade:rgba(249,248,246,.92);
+      --nav-bg:rgba(249,248,246,.93);
+      --matrix-fade:rgba(249,248,246,.08);
+      --mono:"JetBrains Mono",monospace;
+      --sans:"Inter",sans-serif;
+      --r:10px;
+      --rl:16px;
       --s1:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-      --s2:0 4px 16px rgba(0,0,0,.08); --s3:0 8px 32px rgba(0,0,0,.10);
-      --max:960px; --nh:60px;
+      --s2:0 4px 16px rgba(0,0,0,.08);
+      --s3:0 8px 32px rgba(0,0,0,.10);
+      --max:960px;
+      --nh:60px;
+    }
+
+    html[data-theme="dark"] {
+      --bg:#0f1115;
+      --bg2:#171a21;
+      --surface:#1d232f;
+      --surface2:#151922;
+      --border:#2b3444;
+      --border2:#364152;
+      --text:#f8fafc;
+      --text2:#cbd5e1;
+      --text3:#94a3b8;
+      --green:#22c55e;
+      --gl:#4ade80;
+      --gbg:rgba(34,197,94,.12);
+      --gbr:rgba(34,197,94,.34);
+      --hero-fade:rgba(15,17,21,.96);
+      --nav-bg:rgba(15,17,21,.92);
+      --matrix-fade:rgba(15,17,21,.08);
+      --s1:0 1px 3px rgba(0,0,0,.28),0 1px 2px rgba(0,0,0,.22);
+      --s2:0 4px 18px rgba(0,0,0,.32);
+      --s3:0 14px 44px rgba(0,0,0,.42);
     }
     html { scroll-behavior: smooth; }
     body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.6; font-size: 15px; }
@@ -31,7 +70,7 @@
     a    { color: inherit; text-decoration: none; }
 
     /* ---- NAV ---- */
-    nav { position:fixed; top:0; left:0; right:0; z-index:100; height:var(--nh); background:rgba(249,248,246,.93); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); display:flex; align-items:center; }
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; height:var(--nh); background:var(--nav-bg); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); display:flex; align-items:center; }
     .nav-inner { max-width:var(--max); margin:0 auto; padding:0 24px; width:100%; display:flex; align-items:center; justify-content:space-between; }
     .nav-logo { font-family:var(--mono); font-size:13px; font-weight:700; }
     .nav-logo .dot { color:var(--green); }
@@ -58,13 +97,13 @@
     .stitle { font-size:clamp(1.4rem,3vw,1.9rem); font-weight:700; color:var(--text); margin-bottom:32px; }
 
     /* ---- HERO ---- */
-    #hero { padding-top:calc(var(--nh) + 60px); padding-bottom:80px; position:relative; overflow:hidden; }
+    #hero { min-height:100vh; padding-top:calc(var(--nh) + 90px); padding-bottom:90px; position:relative; overflow:hidden; display:flex; align-items:center; }
     /* grade de fundo sutil */
-    #hero::before { content:""; position:absolute; inset:0; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:40px 40px; opacity:.45; pointer-events:none; z-index:0; }
-    #hero::after  { content:""; position:absolute; inset:0; background:radial-gradient(ellipse 70% 60% at 60% 50%,transparent 40%,var(--bg) 100%); pointer-events:none; z-index:0; }
+    #hero::before { content:""; position:absolute; inset:0; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:40px 40px; opacity:.32; pointer-events:none; z-index:0; }
+    #hero::after  { content:""; position:absolute; inset:0; background:radial-gradient(ellipse 70% 60% at 55% 45%,transparent 35%,var(--hero-fade) 100%); pointer-events:none; z-index:1; }
 
     /* Matrix Rain canvas — apenas na hero */
-    #hero-matrix { position:absolute; inset:0; z-index:1; pointer-events:none; opacity:.07; }
+    #hero-matrix { position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.08; }
 
     .hero-inner { position:relative; z-index:2; display:grid; grid-template-columns:1fr auto; align-items:center; gap:48px; }
     .hero-badge { display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11px; font-weight:500; color:var(--green); background:var(--gbg); border:1px solid var(--gbr); padding:5px 12px; border-radius:99px; margin-bottom:20px; }
@@ -86,13 +125,7 @@
     .hero-stats { display:flex; gap:32px; margin-top:36px; padding-top:28px; border-top:1px solid var(--border); }
     .stat-num { font-family:var(--mono); font-size:22px; font-weight:700; color:var(--text); display:block; }
     .stat-lbl { font-size:12px; color:var(--text3); font-weight:500; }
-    #hero-matrix {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.07;
-    }
+    
 
     /* ---- SOBRE ---- */
     .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
@@ -211,15 +244,64 @@
     }
   
 #hero{position:relative;overflow:hidden}
-#hero-matrix{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.18}
+
 .hero-inner,.container{position:relative;z-index:2}
-</style>
+
+    .theme-toggle {
+      width:44px;
+      height:34px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--border2);
+      border-radius:999px;
+      background:var(--surface);
+      color:var(--text);
+      cursor:pointer;
+      font-size:15px;
+      box-shadow:var(--s1);
+      transition:background .2s,border-color .2s,transform .15s;
+    }
+    .theme-toggle:hover { border-color:var(--green); transform:translateY(-1px); }
+    .typewriter {
+      color:var(--green);
+      font-weight:700;
+      min-height:1.45em;
+      display:inline-block;
+    }
+    .typewriter::after {
+      content:"|";
+      color:var(--green);
+      margin-left:3px;
+      animation:cursorBlink .9s infinite;
+    }
+    @keyframes cursorBlink {
+      0%,45%{opacity:1}
+      46%,100%{opacity:0}
+    }
+    html[data-theme="dark"] .btn-s {
+      background:rgba(29,35,47,.72);
+      color:var(--text);
+      border-color:var(--border2);
+    }
+    html[data-theme="dark"] .btn-s:hover {
+      border-color:var(--green);
+      color:var(--gl);
+    }
+    html[data-theme="dark"] .hero-photo {
+      box-shadow:0 0 0 2px rgba(34,197,94,.25),0 22px 50px rgba(0,0,0,.48);
+    }
+    html[data-theme="dark"] #hero-matrix { opacity:.16; }
+    html[data-theme="light"] #hero-matrix { opacity:.06; }
+
+  </style>
 </head>
 <body>
 
 <nav role="navigation" aria-label="Navegação principal">
   <div class="nav-inner">
     <div class="nav-logo">andrey<span class="dot">.</span>dev</div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Alternar tema">🌙</button>
     <ul class="nav-links" role="list">
       <li><a href="#about">Sobre</a></li>
       <li><a href="#experience">Experiência</a></li>
@@ -250,19 +332,18 @@
        HERO
   ============================================= -->
   <section id="hero" aria-label="Apresentação">
-<canvas id="hero-matrix" aria-hidden="true"></canvas>
-
-    <div class="container">
+  <canvas id="hero-matrix" aria-hidden="true"></canvas>
+<div class="container">
       <div class="hero-inner">
         <div>
           <div class="hero-badge"><span class="blink"></span>Disponível para oportunidades</div>
           <h1 class="hero-name">Andrey Vinícius<br>de Souza Silva</h1>
-          <p class="hero-role">Desenvolvedor <span>Java Backend</span> · Analista de TI</p>
+          <p class="hero-role"><span class="typewriter" id="typewriter"></span></p>
           <p class="hero-sum">Profissional de TI em transição para desenvolvimento backend, com experiência em suporte a sistemas, análise de inconsistências e ambientes ERP. Construindo soluções com Java, Spring Boot e APIs REST.</p>
           <div class="hero-actions">
             <a href="#contact" class="btn-p"><i class="fa-solid fa-envelope"></i>Entrar em contato</a>
-            <a href="#" class="btn-s" aria-label="Download currículo PDF"><i class="fa-solid fa-file-arrow-down"></i>Baixar currículo</a>
-            <a href="https://github.com/" target="_blank" rel="noopener" class="btn-s" aria-label="GitHub"><i class="fa-brands fa-github"></i>GitHub</a>
+            <a href="curriculo.pdf" download class="btn-s" aria-label="Download currículo PDF"><i class="fa-solid fa-file-arrow-down"></i>Baixar currículo</a>
+            <a href="https://github.com/andreysilva018" target="_blank" rel="noopener" class="btn-s" aria-label="GitHub"><i class="fa-brands fa-github"></i>GitHub</a>
           </div>
           <div class="hero-stats">
             <div><span class="stat-num">3+</span><span class="stat-lbl">Experiências</span></div>
@@ -554,7 +635,6 @@
   menuClose.addEventListener('click', closeMNav);
   function closeMNav() { mobileNav.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); }
   document.addEventListener('keydown', e => { if(e.key==='Escape') closeMNav(); });
-
   /* ---- nav highlight on scroll ---- */
   const secs  = document.querySelectorAll('section[id]');
   const links = document.querySelectorAll('.nav-links a');
@@ -569,148 +649,197 @@
   }, {threshold:0.4});
   secs.forEach(s => io.observe(s));
 
-  /* =============================================
-     MATRIX RAIN — somente na Hero Section
-  ============================================= */
-  (function () {
-    const canvas = document.getElementById('hero-matrix');
-    const ctx    = canvas.getContext('2d');
-    const hero   = document.getElementById('hero');
+</script>
 
-    // vocabulário de desenvolvedor backend
-    const CHARS = 'Java Spring Boot SQL API Git REST HTTP JPA MVC{}[]()<>/;01'.split('');
 
-    const COL_W    = 18;
-    const SPEED    = 0.55;
-    const COLOR_HD = 'rgba(34,197,94,0.75)';
-    const COLOR_TR = 'rgba(22,163,74,0.50)';
 
-    let cols, drops, raf;
-    let paused = false;
+<script>
+(function () {
+  const root = document.documentElement;
+  const themeButton = document.getElementById("themeToggle");
+  const savedTheme = localStorage.getItem("theme");
+  const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const initialTheme = savedTheme || (systemPrefersDark ? "dark" : "light");
 
-    function resize() {
-      const rect    = hero.getBoundingClientRect();
-      canvas.width  = rect.width;
-      canvas.height = rect.height;
-      const isMobile = window.innerWidth < 768;
-      const spacing  = isMobile ? COL_W * 2.8 : COL_W;
-      cols  = Math.floor(canvas.width / spacing);
-      drops = Array.from({ length: cols }, () => Math.random() * -(canvas.height / 14));
+  function setTheme(theme) {
+    root.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+    if (themeButton) {
+      themeButton.textContent = theme === "dark" ? "☀️" : "🌙";
+      themeButton.setAttribute("aria-label", theme === "dark" ? "Ativar modo claro" : "Ativar modo escuro");
     }
+  }
 
-    function draw() {
-      if (paused) { raf = requestAnimationFrame(draw); return; }
+  setTheme(initialTheme);
 
-      // rastro de desvanecimento usando a cor de fundo da hero
-      ctx.fillStyle = 'rgba(249,248,246,0.055)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if (themeButton) {
+    themeButton.addEventListener("click", function () {
+      const currentTheme = root.getAttribute("data-theme") || "light";
+      setTheme(currentTheme === "dark" ? "light" : "dark");
+    });
+  }
 
-      ctx.font = '13px "JetBrains Mono",monospace';
+  const menuBtn = document.getElementById("menuBtn");
+  const mobileNav = document.getElementById("mobileNav");
+  const menuClose = document.getElementById("menuClose");
 
-      for (let i = 0; i < cols; i++) {
-        const char = CHARS[Math.floor(Math.random() * CHARS.length)];
-        const x    = i * (canvas.width / cols);
-        const y    = drops[i] * 14;
+  window.closeMNav = function () {
+    if (!mobileNav || !menuBtn) return;
+    mobileNav.classList.remove("open");
+    menuBtn.setAttribute("aria-expanded", "false");
+  };
 
-        ctx.fillStyle = drops[i] < 2 ? COLOR_HD : COLOR_TR;
-        ctx.fillText(char, x, y);
+  if (menuBtn && mobileNav) {
+    menuBtn.addEventListener("click", function () {
+      mobileNav.classList.add("open");
+      menuBtn.setAttribute("aria-expanded", "true");
+    });
+  }
 
-        if (y > canvas.height && Math.random() > 0.97) drops[i] = 0;
-        drops[i] += SPEED;
-      }
+  if (menuClose) {
+    menuClose.addEventListener("click", window.closeMNav);
+  }
 
-      raf = requestAnimationFrame(draw);
-    }
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") window.closeMNav();
+  });
 
-    // pausa quando a aba está em segundo plano
-    document.addEventListener('visibilitychange', () => { paused = document.hidden; });
+  const sections = document.querySelectorAll("section[id]");
+  const links = document.querySelectorAll(".nav-links a");
 
-    // resize com debounce
-    let rt;
-    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 120); });
-
-    resize();
-    raf = requestAnimationFrame(draw);
-  })();
-  /* =============================================
-    MATRIX RAIN — somente na Hero Section
-  ============================================= */
-  (function () {
-    const canvas  = document.getElementById('hero-matrix');
-    const ctx     = canvas.getContext('2d');
-    const hero    = document.getElementById('hero');
-
-    // caracteres: vocabulário de desenvolvedor backend
-    const CHARS = 'Java Spring Boot SQL API Git REST HTTP JPA MVC{}[]()<>/;01'.split('');
-
-    const COL_W    = 18;   // largura de cada coluna
-    const SPEED    = 0.6;  // velocidade de queda (menor = mais suave)
-    const COLOR_HD = 'rgba(34, 197, 94, 0.8)';   // cabeça da coluna (verde claro)
-    const COLOR_TR = 'rgba(22, 163, 74, 0.55)';  // rastro (verde principal)
-
-    let cols, drops, raf;
-    let paused = false;
-
-    /* --- dimensiona o canvas ao tamanho da hero --- */
-    function resize() {
-      const rect   = hero.getBoundingClientRect();
-      canvas.width  = rect.width;
-      canvas.height = rect.height;
-
-      // menos colunas em mobile para não poluir
-      const isMobile = window.innerWidth < 768;
-      const spacing  = isMobile ? COL_W * 2.5 : COL_W;
-      cols  = Math.floor(canvas.width / spacing);
-      drops = Array.from({ length: cols }, () => Math.random() * -(canvas.height / 14));
-    }
-
-    /* --- um frame de animação --- */
-    function draw() {
-      if (paused) { raf = requestAnimationFrame(draw); return; }
-
-      // rastro semi-transparente cria o efeito de desvanecimento
-      ctx.fillStyle = 'rgba(249, 248, 246, 0.06)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.font = '13px "JetBrains Mono", monospace';
-
-      for (let i = 0; i < cols; i++) {
-        const char = CHARS[Math.floor(Math.random() * CHARS.length)];
-        const x    = i * (canvas.width / cols);
-        const y    = drops[i] * 14;
-
-        // cabeça levemente mais clara que o rastro
-        const isHead = drops[i] < 2;
-        ctx.fillStyle = isHead ? COLOR_HD : COLOR_TR;
-        ctx.fillText(char, x, y);
-
-        // reinicia coluna aleatoriamente após sair da tela
-        if (y > canvas.height && Math.random() > 0.97) {
-          drops[i] = 0;
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          links.forEach(function (link) {
+            link.style.color = "";
+          });
+          const active = document.querySelector('.nav-links a[href="#' + entry.target.id + '"]');
+          if (active && !active.classList.contains("nav-cta")) active.style.color = "var(--green)";
         }
+      });
+    }, { threshold: 0.4 });
 
-        drops[i] += SPEED;
+    sections.forEach(function (section) {
+      observer.observe(section);
+    });
+  }
+
+  const typewriter = document.getElementById("typewriter");
+  const phrases = [
+    "Olá, eu sou Andrey.",
+    "Auxiliar de TI.",
+    "Desenvolvedor Backend Java em formação.",
+    "Especialista em resolver problemas.",
+    "Bem-vindo ao meu portfólio."
+  ];
+
+  if (typewriter) {
+    let phraseIndex = 0;
+    let letterIndex = 0;
+    let deleting = false;
+
+    function typeLoop() {
+      const current = phrases[phraseIndex];
+      typewriter.textContent = current.slice(0, letterIndex);
+
+      if (!deleting && letterIndex < current.length) {
+        letterIndex++;
+        setTimeout(typeLoop, 70);
+        return;
       }
 
-      raf = requestAnimationFrame(draw);
+      if (!deleting && letterIndex === current.length) {
+        if (phraseIndex === phrases.length - 1) return;
+        deleting = true;
+        setTimeout(typeLoop, 950);
+        return;
+      }
+
+      if (deleting && letterIndex > 0) {
+        letterIndex--;
+        setTimeout(typeLoop, 34);
+        return;
+      }
+
+      deleting = false;
+      phraseIndex++;
+      setTimeout(typeLoop, 200);
     }
 
-    /* --- pausa quando a aba está em segundo plano --- */
-    document.addEventListener('visibilitychange', () => {
+    typeLoop();
+  }
+
+  const canvas = document.getElementById("hero-matrix");
+  const hero = document.getElementById("hero");
+
+  if (canvas && hero) {
+    const ctx = canvas.getContext("2d");
+    const chars = "Java Spring Boot SQL API Git REST HTTP JPA MVC{}[]()<>/;01".split("");
+    const columnWidth = 18;
+    const lineHeight = 15;
+    let columns = 0;
+    let drops = [];
+    let paused = false;
+    let animationId = null;
+
+    function resizeMatrix() {
+      const rect = hero.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+      canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+      canvas.style.width = rect.width + "px";
+      canvas.style.height = rect.height + "px";
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+      const isMobile = window.innerWidth < 768;
+      const spacing = isMobile ? columnWidth * 2.4 : columnWidth;
+      columns = Math.max(1, Math.floor(rect.width / spacing));
+      drops = Array.from({ length: columns }, function () {
+        return Math.random() * -(rect.height / lineHeight);
+      });
+    }
+
+    function drawMatrix() {
+      if (!paused) {
+        const currentTheme = root.getAttribute("data-theme") || "light";
+        ctx.fillStyle = getComputedStyle(root).getPropertyValue("--matrix-fade").trim() || (currentTheme === "dark" ? "rgba(15,17,21,.08)" : "rgba(249,248,246,.08)");
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.font = '13px "JetBrains Mono", monospace';
+        const width = hero.getBoundingClientRect().width;
+        const height = hero.getBoundingClientRect().height;
+
+        for (let i = 0; i < columns; i++) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          const x = i * (width / columns);
+          const y = drops[i] * lineHeight;
+
+          ctx.fillStyle = drops[i] < 2 ? "rgba(74,222,128,.88)" : "rgba(34,197,94,.58)";
+          ctx.fillText(char, x, y);
+
+          if (y > height && Math.random() > 0.965) drops[i] = 0;
+          drops[i] += 1.45;
+        }
+      }
+
+      animationId = requestAnimationFrame(drawMatrix);
+    }
+
+    document.addEventListener("visibilitychange", function () {
       paused = document.hidden;
     });
 
-    /* --- redimensiona sem travar a UI --- */
-    let resizeTimer;
-    window.addEventListener('resize', () => {
+    let resizeTimer = null;
+    window.addEventListener("resize", function () {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(resize, 120);
+      resizeTimer = setTimeout(resizeMatrix, 120);
     });
 
-    /* --- inicia --- */
-    resize();
-    raf = requestAnimationFrame(draw);
-  })();
+    resizeMatrix();
+    drawMatrix();
+  }
+})();
 </script>
 
 </body>
