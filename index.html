@@ -120,8 +120,6 @@
     .btn-s:hover { border-color:var(--green); color:var(--green); transform:translateY(-1px); }
     .hero-photo-wrap { position:relative; flex-shrink:0; }
     .hero-photo { width:200px; height:200px; border-radius:var(--rl); object-fit:cover; object-position:center top; border:3px solid var(--surface); box-shadow:var(--s3); position:relative; z-index:1; }
-    .hero-photo-wrap::before { content:""; position:absolute; inset:-8px; border-radius:20px; border:1.5px dashed var(--gbr); z-index:0; }
-    .hero-photo-wrap::after  { content:""; position:absolute; bottom:-6px; right:-6px; width:100%; height:100%; border-radius:var(--rl); background:var(--gbg); border:1.5px solid var(--gbr); z-index:0; }
     .hero-stats { display:flex; gap:32px; margin-top:36px; padding-top:28px; border-top:1px solid var(--border); }
     .stat-num { font-family:var(--mono); font-size:22px; font-weight:700; color:var(--text); display:block; }
     .stat-lbl { font-size:12px; color:var(--text3); font-weight:500; }
@@ -132,7 +130,7 @@
     .about-text p { color:var(--text2); margin-bottom:16px; line-height:1.8; }
     .hi-list { display:flex; flex-direction:column; gap:14px; }
     .hi-item { display:flex; align-items:flex-start; gap:12px; padding:14px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--r); box-shadow:var(--s1); transition:border-color .2s; }
-    .hi-item:hover { border-color:var(--gbr); }
+    .hi-item{transition:.25s ease;}.hi-item:hover { border-color:var(--gbr); transform:translateY(-3px); box-shadow:0 12px 28px rgba(34,197,94,.15);} .hi-item:hover .hi-icon{transform:scale(1.12);} .hi-icon{transition:.25s;}
     .hi-icon { width:36px; height:36px; flex-shrink:0; background:var(--gbg); border:1px solid var(--gbr); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--green); font-size:15px; }
     .hi-title { font-size:13px; font-weight:700; color:var(--text); margin-bottom:2px; }
     .hi-desc  { font-size:12px; color:var(--text2); line-height:1.5; }
@@ -198,14 +196,14 @@
     .cert-year   { font-family:var(--mono); font-size:10px; color:var(--text3); margin-top:4px; }
 
     /* ---- CONTATO ---- */
-    #contact { background:var(--text); color:#fff; }
+    #contact { background:var(--surface); color:var(--text); }
     #contact .slabel { color:var(--gl); }
     #contact .slabel::before { background:var(--gl); }
-    #contact .stitle { color:#fff; }
+    #contact .stitle { color:var(--text); }
     .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
-    .contact-txt  { font-size:15px; color:#a1a1aa; line-height:1.75; margin-bottom:28px; }
+    .contact-txt  { font-size:15px; color:var(--text2); line-height:1.75; margin-bottom:28px; }
     .clinks { display:flex; flex-direction:column; gap:12px; }
-    .clink { display:flex; align-items:center; gap:14px; padding:14px 16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:var(--r); transition:background .2s,border-color .2s; text-decoration:none; color:#fff; }
+     .clink { background:var(--surface); color:var(--text);  display:flex; align-items:center; gap:14px; padding:14px 16px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:var(--r); transition:background .2s,border-color .2s; text-decoration:none; color:#fff; }
     .clink:hover { background:rgba(22,163,74,.15); border-color:rgba(22,163,74,.4); }
     .clink-icon { width:38px; height:38px; flex-shrink:0; border-radius:8px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; font-size:15px; }
     .clink-icon.li{color:#0a66c2} .clink-icon.gh{color:#fff} .clink-icon.wa{color:#25d366} .clink-icon.ig{color:#e1306c} .clink-icon.em{color:#22c55e}
@@ -292,7 +290,7 @@
       box-shadow:0 0 0 2px rgba(34,197,94,.25),0 22px 50px rgba(0,0,0,.48);
     }
     html[data-theme="dark"] #hero-matrix { opacity:.16; }
-    html[data-theme="light"] #hero-matrix { opacity:.06; }
+    html[data-theme="light"] #hero-matrix { opacity:.22; }
 
   </style>
 </head>
@@ -308,7 +306,7 @@
       <li><a href="#education">Formação</a></li>
       <li><a href="#skills">Tecnologias</a></li>
       <li><a href="#projects">Projetos</a></li>
-      <li><a href="#contact" class="nav-cta">Contato</a></li>
+      <li><a href="#contact">Contato</a></li>
     </ul>
     <button class="nav-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false">
       <i class="fa-solid fa-bars"></i>
@@ -342,7 +340,7 @@
           <p class="hero-sum">Profissional de TI em transição para desenvolvimento backend, com experiência em suporte a sistemas, análise de inconsistências e ambientes ERP. Construindo soluções com Java, Spring Boot e APIs REST.</p>
           <div class="hero-actions">
             <a href="#contact" class="btn-p"><i class="fa-solid fa-envelope"></i>Entrar em contato</a>
-            <a href="curriculo.pdf" download class="btn-s" aria-label="Download currículo PDF"><i class="fa-solid fa-file-arrow-down"></i>Baixar currículo</a>
+            <a href="https://drive.google.com/file/d/16NvuM7cxa-PO1DWWNCYb6Tzod3szADxV/view?usp=sharing" download class="btn-s" aria-label="Download currículo PDF"><i class="fa-solid fa-file-arrow-down"></i>Baixar currículo</a>
             <a href="https://github.com/andreysilva018" target="_blank" rel="noopener" class="btn-s" aria-label="GitHub"><i class="fa-brands fa-github"></i>GitHub</a>
           </div>
           <div class="hero-stats">
@@ -522,7 +520,7 @@
       <h2 id="proj-title" class="stitle">Projetos</h2>
       <div class="proj-grid">
 
-        <a class="proj-card ft" href="https://github.com/" target="_blank" rel="noopener">
+        <a class="proj-card ft" href="https://github.com/andreysilva018/Desktop-client-management-system.git" target="_blank" rel="noopener">
           <div class="proj-head">
             <div class="proj-icon"><i class="fa-solid fa-users" style="color:var(--green)"></i></div>
             <div class="proj-links">
@@ -536,7 +534,7 @@
           <div class="proj-tags"><span class="proj-tag">Java</span><span class="proj-tag">Swing</span><span class="proj-tag">JDBC</span><span class="proj-tag">MySQL</span><span class="proj-tag">OOP</span><span class="proj-tag">CRUD</span></div>
         </a>
 
-        <a class="proj-card" href="https://github.com/" target="_blank" rel="noopener">
+        <a class="proj-card" href="https://github.com/andreysilva018/task-manager-java.git" target="_blank" rel="noopener">
           <div class="proj-head">
             <div class="proj-icon"><i class="fa-solid fa-list-check" style="color:var(--green)"></i></div>
             <div class="proj-links"><span class="proj-link"><i class="fa-brands fa-github"></i></span></div>
@@ -546,17 +544,17 @@
           <div class="proj-tags"><span class="proj-tag">Java</span><span class="proj-tag">MySQL</span><span class="proj-tag">Swing</span><span class="proj-tag">MVC</span></div>
         </a>
 
-        <a class="proj-card" href="https://github.com/" target="_blank" rel="noopener">
+        <a class="proj-card" href="https://github.com/andreysilva018/AppImobiliariaAndroid.git" target="_blank" rel="noopener">
           <div class="proj-head">
             <div class="proj-icon"><i class="fa-brands fa-android" style="color:#3ddc84"></i></div>
             <div class="proj-links"><span class="proj-link"><i class="fa-brands fa-github"></i></span></div>
           </div>
-          <div class="proj-title">App Android de Tutoriais</div>
-          <p class="proj-desc">Aplicativo mobile Android com conteúdo educacional em tutoriais. Explora navegação entre telas e consumo de dados locais.</p>
+          <div class="proj-title">App Android de Imobiliaria</div>
+          <p class="proj-desc">Aplicativo mobile Android com campos para ser preenchidos pelo usuário. Explora navegação entre telas e consumo de dados locais.</p>
           <div class="proj-tags"><span class="proj-tag">Java</span><span class="proj-tag">Android</span><span class="proj-tag">XML</span></div>
         </a>
 
-        <a class="proj-card" href="https://github.com/" target="_blank" rel="noopener">
+        <a class="proj-card" href="" target="_blank" rel="noopener">
           <div class="proj-head">
             <div class="proj-icon"><i class="fa-solid fa-building-columns" style="color:var(--green)"></i></div>
             <div class="proj-links"><span class="proj-link"><i class="fa-brands fa-github"></i></span></div>
@@ -597,11 +595,11 @@
         <div>
           <p class="contact-txt">Estou em busca de oportunidades como Desenvolvedor Java Júnior, Backend Júnior ou Analista de Sistemas. Se sua empresa está contratando ou quer bater um papo sobre tecnologia, me manda uma mensagem!</p>
           <div class="clinks">
-            <a class="clink" href="https://linkedin.com/in/" target="_blank" rel="noopener"><div class="clink-icon li"><i class="fa-brands fa-linkedin-in"></i></div><div><div class="clink-lbl">LinkedIn</div><div class="clink-val">/in/andreyviniciuss</div></div><i class="fa-solid fa-arrow-right clink-arr"></i></a>
-            <a class="clink" href="https://github.com/" target="_blank" rel="noopener"><div class="clink-icon gh"><i class="fa-brands fa-github"></i></div><div><div class="clink-lbl">GitHub</div><div class="clink-val">/andreyviniciuss</div></div><i class="fa-solid fa-arrow-right clink-arr"></i></a>
-            <a class="clink" href="https://wa.me/5511999999999" target="_blank" rel="noopener"><div class="clink-icon wa"><i class="fa-brands fa-whatsapp"></i></div><div><div class="clink-lbl">WhatsApp</div><div class="clink-val">+55 (11) 9 9999-9999</div></div><i class="fa-solid fa-arrow-right clink-arr"></i></a>
-            <a class="clink" href="https://instagram.com/" target="_blank" rel="noopener"><div class="clink-icon ig"><i class="fa-brands fa-instagram"></i></div><div><div class="clink-lbl">Instagram</div><div class="clink-val">@andreyviniciuss</div></div><i class="fa-solid fa-arrow-right clink-arr"></i></a>
-            <a class="clink" href="mailto:seu@email.com"><div class="clink-icon em"><i class="fa-solid fa-envelope"></i></div><div><div class="clink-lbl">E-mail</div><div class="clink-val">seu@email.com</div></div><i class="fa-solid fa-arrow-right clink-arr"></i></a>
+            <a class="clink" href="https://www.linkedin.com/in/andrey-ssilva/" target="_blank" rel="noopener"><div class="clink-icon li"><i class="fa-brands fa-linkedin-in"></i></div><div><div class="clink-lbl">LinkedIn</div><div class="clink-val">/in/andrey-ssilva</div></div><i class="fa-solid fa-arrow-right clink-arr"></i></a>
+            <a class="clink" href="https://github.com/andreysilva018" target="_blank" rel="noopener"><div class="clink-icon gh"><i class="fa-brands fa-github"></i></div><div><div class="clink-lbl">GitHub</div><div class="clink-val">/andreysilva018</div></div><i class="fa-solid fa-arrow-right clink-arr"></i></a>
+            <a class="clink" href="https://wa.me/5518997727839" target="_blank" rel="noopener"><div class="clink-icon wa"><i class="fa-brands fa-whatsapp"></i></div><div><div class="clink-lbl">WhatsApp</div><div class="clink-val">+55 (18) 99772-7839</div></div><i class="fa-solid fa-arrow-right clink-arr"></i></a>
+            <a class="clink" href="https://www.instagram.com/andreysouzasilvaa?igsh=MWozMGFvc2Jma3E5aQ%3D%3D" target="_blank" rel="noopener"><div class="clink-icon ig"><i class="fa-brands fa-instagram"></i></div><div><div class="clink-lbl">Instagram</div><div class="clink-val">@andreysouzasilvaa</div></div><i class="fa-solid fa-arrow-right clink-arr"></i></a>
+            <a class="clink" href="mailto:andreysilvatisuporte@gmail.com"><div class="clink-icon em"><i class="fa-solid fa-envelope"></i></div><div><div class="clink-lbl">E-mail</div><div class="clink-val">andreysilvatisuporte@gmail.com</div></div><i class="fa-solid fa-arrow-right clink-arr"></i></a>
           </div>
         </div>
         <div class="avail-card">
@@ -614,7 +612,7 @@
             <span class="avail-type">Analista Jr</span>
             <span class="avail-type">Presencial · Híbrido · Remoto</span>
           </div>
-          <a href="#" class="btn-p"><i class="fa-solid fa-file-arrow-down"></i>Baixar currículo PDF</a>
+          <a href="https://drive.google.com/file/d/16NvuM7cxa-PO1DWWNCYb6Tzod3szADxV/view?usp=sharing" class="btn-p"><i class="fa-solid fa-file-arrow-down"></i>Baixar currículo PDF</a>
         </div>
       </div>
     </div>
@@ -682,7 +680,7 @@
   const menuBtn = document.getElementById("menuBtn");
   const mobileNav = document.getElementById("mobileNav");
   const menuClose = document.getElementById("menuClose");
-
+  if(menuClose){menuClose.addEventListener("click", window.closeMNav);}
   window.closeMNav = function () {
     if (!mobileNav || !menuBtn) return;
     mobileNav.classList.remove("open");
@@ -750,10 +748,7 @@
       }
 
       if (!deleting && letterIndex === current.length) {
-        if (phraseIndex === phrases.length - 1) return;
-        deleting = true;
-        setTimeout(typeLoop, 950);
-        return;
+        setTimeout(typeLoop,1500); deleting=true; return;
       }
 
       if (deleting && letterIndex > 0) {
@@ -763,7 +758,7 @@
       }
 
       deleting = false;
-      phraseIndex++;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
       setTimeout(typeLoop, 200);
     }
 
@@ -830,7 +825,7 @@
       paused = document.hidden;
     });
 
-    let resizeTimer = null;
+    let resizeTimer = null; 
     window.addEventListener("resize", function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(resizeMatrix, 120);
@@ -842,5 +837,5 @@
 })();
 </script>
 
-</body>
+</body> 
 </html>
