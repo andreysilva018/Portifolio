@@ -189,17 +189,134 @@
     .proj-tags  { display:flex; flex-wrap:wrap; gap:6px; }
     .proj-tag   { font-family:var(--mono); font-size:11px; font-weight:500; color:var(--text2); background:var(--bg2); border:1px solid var(--border); padding:3px 9px; border-radius:6px; }
 
-    /* ---- CERTIFICAÇÕES ---- */
-    .certs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
-    .cert-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px 18px; display:flex; align-items:flex-start; gap:12px; box-shadow:var(--s1); transition:border-color .2s; }
-    .cert-card:hover { border-color:var(--gbr); }
-    .cert-icon { width:36px; height:36px; flex-shrink:0; border-radius:8px; background:var(--gbg); border:1px solid var(--gbr); display:flex; align-items:center; justify-content:center; color:var(--green); font-size:14px; }
-    .cert-name   { font-size:13px; font-weight:700; color:var(--text); }
-    .cert-issuer { font-size:11px; color:var(--text2); margin-top:2px; }
-    .cert-year   { font-family:var(--mono); font-size:10px; color:var(--text3); margin-top:4px; }
+ /* ---- CERTIFICAÇÕES ---- */
+    .certs-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+    }
+
+    .cert-card{
+      position:relative;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--rl);
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      box-shadow:var(--s1);
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      overflow:hidden;
+    }
+
+    .cert-card:hover{
+      transform:translateY(-5px);
+      box-shadow:var(--s3);
+      border-color:var(--gbr);
+    }
+
+    .cert-card.focus{
+      border-color:var(--gbr);
+    }
+
+    .cert-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .cert-icon{
+      width:46px;
+      height:46px;
+      flex-shrink:0;
+      border-radius:14px;
+      background:var(--gbg);
+      border:1px solid var(--gbr);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--green);
+      font-size:22px;
+      transition:transform .25s ease;
+    }
+
+    .cert-card:hover .cert-icon{
+      transform:scale(1.08) rotate(4deg);
+    }
+
+    .cert-badge{
+      font-family:var(--mono);
+      font-size:10px;
+      font-weight:700;
+      color:var(--green);
+      background:var(--gbg);
+      border:1px solid var(--gbr);
+      padding:4px 9px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+
+    .cert-badge.secondary{
+      color:var(--text3);
+      background:var(--bg2);
+      border-color:var(--border);
+    }
+
+    .cert-name{
+      font-size:16px;
+      font-weight:800;
+      color:var(--text);
+      margin-bottom:4px;
+    }
+
+    .cert-issuer{
+      font-size:13px;
+      color:var(--text2);
+      margin-bottom:14px;
+    }
+
+    .cert-list{
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:16px;
+    }
+
+    .cert-list li{
+      font-size:13px;
+      color:var(--text2);
+      display:flex;
+      gap:8px;
+      line-height:1.5;
+    }
+
+    .cert-list li::before{
+      content:"•";
+      color:var(--green);
+      font-weight:800;
+    }
+
+    .cert-status{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      font-family:var(--mono);
+      font-size:11px;
+      font-weight:700;
+      color:#eab308;
+      background:rgba(234,179,8,.12);
+      border:1px solid rgba(234,179,8,.28);
+      padding:5px 10px;
+      border-radius:999px;
+    }
 
     /* ---- CONTATO ---- */
-    #contact { background:var(--surface); color:var(--text); }
+    #contact { 
+      background:var(--surface); color:var(--text); 
+    }
     #contact .slabel { color:var(--gl); }
     #contact .slabel::before { background:var(--gl); }
     #contact .stitle { color:var(--text); }
@@ -349,7 +466,7 @@
           <p class="hero-sum">Profissional de TI em transição para desenvolvimento backend, com experiência em suporte a sistemas, análise de inconsistências e ambientes ERP. Construindo soluções com Java, Spring Boot e APIs REST.</p>
           <div class="hero-actions">
             <a href="#contact" class="btn-p"><i class="fa-solid fa-envelope"></i>Entrar em contato</a>
-            <a href="https://drive.google.com/file/d/16NvuM7cxa-PO1DWWNCYb6Tzod3szADxV/view?usp=sharing" download class="btn-s" aria-label="Download currículo PDF"><i class="fa-solid fa-file-arrow-down"></i>Baixar currículo</a>
+            <a href="https://drive.google.com/file/d/1Q4oRzQAoSho-fqp-7705ncmAonbPgEmx/view?usp=sharing" download class="btn-s" aria-label="Download currículo PDF"><i class="fa-solid fa-file-arrow-down"></i>Baixar currículo</a>
             <a href="https://github.com/andreysilva018" target="_blank" rel="noopener" class="btn-s" aria-label="GitHub"><i class="fa-brands fa-github"></i>GitHub</a>
           </div>
           <div class="hero-stats">
@@ -584,11 +701,111 @@
     <div class="container">
       <p class="slabel">certificações</p>
       <h2 id="cert-title" class="stitle">Certificações &amp; Cursos</h2>
+
       <div class="certs-grid">
-        <div class="cert-card"><div class="cert-icon"><i class="fa-solid fa-certificate"></i></div><div><div class="cert-name">Java Completo — POO</div><div class="cert-issuer">Adicione a plataforma</div><div class="cert-year">2024</div></div></div>
-        <div class="cert-card"><div class="cert-icon"><i class="fa-solid fa-certificate"></i></div><div><div class="cert-name">Spring Boot — APIs REST</div><div class="cert-issuer">Adicione a plataforma</div><div class="cert-year">2024</div></div></div>
-        <div class="cert-card"><div class="cert-icon"><i class="fa-solid fa-certificate"></i></div><div><div class="cert-name">MySQL — Banco de Dados</div><div class="cert-issuer">Adicione a plataforma</div><div class="cert-year">2024</div></div></div>
-        <div class="cert-card"><div class="cert-icon"><i class="fa-solid fa-certificate"></i></div><div><div class="cert-name">Git &amp; GitHub</div><div class="cert-issuer">Adicione a plataforma</div><div class="cert-year">2024</div></div></div>
+
+        <div class="cert-card focus">
+          <div class="cert-top">
+            <div class="cert-icon"><i class="fa-brands fa-java"></i></div>
+            <span class="cert-badge">Foco principal</span>
+          </div>
+          <div>
+            <div class="cert-name">Java</div>
+            <div class="cert-issuer">3 cursos em andamento</div>
+            <ul class="cert-list">
+              <li>Programação Orientada a Objetos</li>
+              <li>Aplicações Desktop com Java e MySQL</li>
+              <li>Preparatório para mercado de trabalho em TI</li>
+            </ul>
+            <span class="cert-status">Em andamento</span>
+          </div>
+        </div>
+
+        <div class="cert-card focus">
+          <div class="cert-top">
+            <div class="cert-icon"><i class="fa-solid fa-leaf"></i></div>
+            <span class="cert-badge">Foco principal</span>
+          </div>
+          <div>
+            <div class="cert-name">Spring Boot</div>
+            <div class="cert-issuer">2 cursos em andamento</div>
+            <ul class="cert-list">
+              <li>APIs REST com Spring Boot</li>
+              <li>Fullstack com ReactJS e Deploy no Docker</li>
+              <li>Práticas voltadas ao mercado de trabalho</li>
+            </ul>
+            <span class="cert-status">Em andamento</span>
+          </div>
+        </div>
+
+        <div class="cert-card focus">
+          <div class="cert-top">
+            <div class="cert-icon"><i class="fa-solid fa-database"></i></div>
+            <span class="cert-badge">Foco principal</span>
+          </div>
+          <div>
+            <div class="cert-name">SQL &amp; MySQL</div>
+            <div class="cert-issuer">1 curso em andamento</div>
+            <ul class="cert-list">
+              <li>Consultas SQL</li>
+              <li>Banco de dados relacional</li>
+              <li>Projeto prático com MySQL</li>
+            </ul>
+            <span class="cert-status">Em andamento</span>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <div class="cert-top">
+            <div class="cert-icon"><i class="fa-brands fa-microsoft"></i></div>
+            <span class="cert-badge secondary">Complementar</span>
+          </div>
+          <div>
+            <div class="cert-name">.NET</div>
+            <div class="cert-issuer">2 cursos em andamento</div>
+            <ul class="cert-list">
+              <li>.NET Core voltado ao mercado</li>
+              <li>ASP.NET Core MVC</li>
+              <li>Fundamentos de aplicações web</li>
+            </ul>
+            <span class="cert-status">Em andamento</span>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <div class="cert-top">
+            <div class="cert-icon"><i class="fa-brands fa-android"></i></div>
+            <span class="cert-badge secondary">Complementar</span>
+          </div>
+          <div>
+            <div class="cert-name">Android</div>
+            <div class="cert-issuer">1 curso em andamento</div>
+            <ul class="cert-list">
+              <li>Desenvolvimento mobile</li>
+              <li>Kotlin</li>
+              <li>Aplicativos Android</li>
+            </ul>
+            <span class="cert-status">Em andamento</span>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <div class="cert-top">
+            <div class="cert-icon"><i class="fa-solid fa-code"></i></div>
+            <span class="cert-badge secondary">Complementar</span>
+          </div>
+          <div>
+            <div class="cert-name">Frontend</div>
+            <div class="cert-issuer">1 curso em andamento</div>
+            <ul class="cert-list">
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>JavaScript com projetos práticos</li>
+            </ul>
+            <span class="cert-status">Em andamento</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -621,7 +838,7 @@
             <span class="avail-type">Analista Jr</span>
             <span class="avail-type">Presencial · Híbrido · Remoto</span>
           </div>
-          <a href="https://drive.google.com/file/d/16NvuM7cxa-PO1DWWNCYb6Tzod3szADxV/view?usp=sharing" class="btn-p"><i class="fa-solid fa-file-arrow-down"></i>Baixar currículo PDF</a>
+          <a href="https://drive.google.com/file/d/1Q4oRzQAoSho-fqp-7705ncmAonbPgEmx/view?usp=sharing" class="btn-p"><i class="fa-solid fa-file-arrow-down"></i>Baixar currículo PDF</a>
         </div>
       </div>
     </div>
