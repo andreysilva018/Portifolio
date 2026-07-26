@@ -172,7 +172,7 @@
         ctx.fillStyle = getComputedStyle(root).getPropertyValue("--matrix-fade").trim() || (currentTheme === "dark" ? "rgba(15,17,21,.08)" : "rgba(249,248,246,.08)") ;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.font = '23px "JetBrains Mono", monospace';
+        ctx.font = '16px "JetBrains Mono", monospace';
         const width = hero.getBoundingClientRect().width;
         const height = hero.getBoundingClientRect().height;
 
