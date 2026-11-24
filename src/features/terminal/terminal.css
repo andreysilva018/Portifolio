@@ -1,0 +1,27 @@
+.terminal-panel .panel-heading h2 { display: flex; align-items: center; gap: .55rem; }
+.terminal-panel .panel-heading .icon { color: var(--accent); }
+.terminal-description, .terminal-reference { padding: .75rem 1rem; color: var(--muted); }
+.terminal-interactive { display: none; }
+.has-js .terminal-interactive { display: grid; gap: .7rem; padding: 0 1rem 1rem; }
+.terminal-controls { display: flex; flex-wrap: wrap; gap: .75rem; }
+.terminal-controls .text-link, .terminal-reference summary { min-height: 44px; }
+.terminal-output { background: #0c151a; border: 1px solid var(--line); border-radius: 4px; min-height: 12rem; max-height: 28rem; overflow: auto; padding: .75rem; }
+.terminal-output:focus-visible { outline-offset: -3px; }
+.terminal-output > ol > li + li { border-top: 1px solid var(--line); margin-top: .65rem; padding-top: .65rem; }
+.terminal-output pre, .terminal-entry, .terminal-prompt input { font-family: Consolas, 'Liberation Mono', monospace; }
+.terminal-output pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--type-meta); }
+.terminal-entry { color: var(--accent); margin-bottom: .3rem; overflow-wrap: anywhere; }
+.terminal-notice, .terminal-hint { color: var(--muted); font-size: var(--type-meta); }
+.terminal-links { margin-top: .35rem; }
+.terminal-links a { overflow-wrap: anywhere; }
+.terminal-form label { display: block; margin-bottom: .35rem; font-weight: 600; }
+.terminal-prompt { display: grid; align-items: center; grid-template-columns: auto minmax(0, 1fr) auto; gap: .45rem; }
+.terminal-prompt > span { color: var(--accent); }
+.terminal-prompt input { min-width: 0; width: 100%; min-height: 44px; padding: .45rem; border: 1px solid #5a747f; border-radius: 4px; color: #e5ebee; background: #101619; }
+.terminal-prompt input::placeholder { color: var(--muted); }
+.terminal-reference { border-top: 1px solid var(--line); }
+.terminal-reference summary { color: var(--accent); cursor: pointer; padding-block: .55rem; }
+.terminal-reference dl > div { border-top: 1px solid var(--line); padding-block: .4rem; }
+.terminal-reference dt { color: #e5ebee; }
+.terminal-reference dt span { color: var(--muted); font-size: var(--type-meta); }
+@media (prefers-reduced-motion: reduce) { .terminal-panel * { transition: none; animation: none; } }

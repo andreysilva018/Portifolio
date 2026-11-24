@@ -8,7 +8,7 @@ export const navigation: NavigationItem[] = [
   { path: '/', name: 'Overview', icon: 'overview', group: 'Workspace' },
   { path: incidentBasePath, name: 'Incident Explorer', icon: 'incident', group: 'Workspace' },
   { path: '/infrastructure/', name: 'Infrastructure Lab', icon: 'infrastructure', group: 'Workspace' },
-  { path: '/terminal/', name: 'Interactive Terminal', icon: 'terminal', group: 'Workspace', future: true },
+  { path: '/terminal/', name: 'Interactive Terminal', icon: 'terminal', group: 'Workspace' },
   { path: '/projects/', name: 'Engineering Projects', icon: 'projects', group: 'Biblioteca' },
   { path: '/profile/', name: 'Professional Profile', icon: 'profile', group: 'Biblioteca' },
 ];
@@ -36,6 +36,11 @@ export function normalizePath(path: string): string {
 }
 
 export function routeMetadata(path: string) {
+  if (normalizePath(path) === '/terminal/') return {
+    title: 'Interactive Terminal | Andrey IT Operations',
+    description: 'Explore o perfil profissional e pratique comandos simulados de Linux e redes em um terminal educativo no navegador.',
+    path: '/terminal/',
+  };
   if (normalizePath(path) === '/infrastructure/') return {
     title: 'Infrastructure Lab | Andrey IT Operations',
     description: 'Topologia e inventário do laboratório Linux: HP ProLiant ML30 Gen, Docker, acesso interno pela LAN e publicação de agendamento via Cloudflare Tunnel.',

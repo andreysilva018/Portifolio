@@ -99,13 +99,11 @@ test.describe('without JavaScript', () => {
   });
 });
 
-test('module previews expose no pretend commands or operational measurements', async ({ page }) => {
-  for (const [path] of routes.slice(3, 4)) {
-    await page.goto(path);
-    await expect(page.getByText('Em desenvolvimento', { exact: true })).toBeVisible();
-    await expect(page.locator('main input, main textarea, main canvas')).toHaveCount(0);
-    await expect(page.getByText('Sem dados operacionais', { exact: true })).toBeVisible();
-  }
+test('terminal is integrated into workspace navigation and labelled as demonstrative', async ({ page }) => {
+  await page.goto('/terminal/');
+  await expect(page.getByRole('heading', { name: 'Interactive Terminal' })).toBeVisible();
+  await expect(page.getByText('Ambiente demonstrativo', { exact: true })).toBeVisible();
+  await expect(page.getByRole('textbox', { name: 'Comando do terminal' })).toBeVisible();
 });
 
 test('unknown routes retain 404 content; screenshots cover desktop and mobile', async ({ page }) => {

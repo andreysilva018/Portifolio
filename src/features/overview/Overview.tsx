@@ -33,7 +33,7 @@ export function Overview() {
           <a className="module-row" href={module.path}>
             <span className="module-symbol"><WorkspaceIcon name={module.icon} /></span>
             <div><h3>{module.name}</h3><p>{moduleSummaries[module.icon]}</p></div>
-            <span className="status">{module.icon === 'incident' ? 'Casos técnicos' : module.icon === 'infrastructure' ? 'Arquitetura documentada' : 'Em desenvolvimento'}</span>
+            <span className="status">{module.icon === 'incident' ? 'Casos técnicos' : module.icon === 'infrastructure' ? 'Arquitetura documentada' : 'Simulação local'}</span>
             <WorkspaceIcon name="arrow" />
           </a>
         </li>)}

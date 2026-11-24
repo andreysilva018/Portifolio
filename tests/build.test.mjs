@@ -45,13 +45,12 @@ test('internal links, section anchors and assets resolve to generated files', as
   }
 });
 
-test('future modules clearly disclose their unfinished state', async () => {
-  for (const path of ['/terminal/']) {
-    const html = await readFile(pageFile(path), 'utf8');
-    assert.match(html, /Em desenvolvimento/);
-    assert.match(html, /prévia de escopo/);
-    assert.ok(!/<input|<textarea|<canvas/.test(html));
-  }
+test('terminal introduction and command reference are pre-rendered', async () => {
+  const html = await readFile(pageFile('/terminal/'), 'utf8');
+  assert.match(html, /Interactive Terminal/);
+  assert.match(html, /Ambiente demonstrativo/);
+  assert.match(html, /Referência de comandos/);
+  assert.match(html, /traceroute/);
 });
 
 test('404 is not indexed and sitemap only includes implemented public routes', async () => {

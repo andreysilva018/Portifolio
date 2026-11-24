@@ -39,7 +39,7 @@ React + TypeScript + Vite + Tailwind. Componentes por funcionalidade; perfil, ex
 | `/` | Overview com perfil compacto, áreas de trabalho e atividade documentada |
 | `/incidents/` | Incident Explorer com catálogo, filtros e páginas individuais |
 | `/infrastructure/` | Infrastructure Lab com topologia interativa e inventário |
-| `/terminal/` | Interactive Terminal — prévia de escopo |
+| `/terminal/` | Interactive Terminal com comandos de portfólio e simulações locais |
 | `/projects/` | Engineering Projects com lista/detalhe nativa |
 | `/profile/` | Professional Profile com trajetória, competências, formação e contato |
 
@@ -65,7 +65,7 @@ Validação da Fase 1.5: TypeScript e build aprovados, **6/6 testes de HTML e 20
 
 Link para pular conteúdo, landmarks, foco visível, navegação ativa com `aria-current`, menu mobile com Escape e retorno/ciclo de foco, conteúdo de fundo `inert`, fontes escaláveis e movimento reduzido. Sem JavaScript, a navegação permanece disponível. Contraste automatizado não equivale a uma auditoria completa de acessibilidade ou validação com leitor de tela.
 
-Não há métricas fictícias, incidentes inventados, monitoramento, comandos executáveis ou acesso à infraestrutura privada. O Incident Explorer oferece quatro casos profissionais anonimizados, com duas simulações de processos. Infrastructure Lab documenta o servidor, os caminhos de acesso e as aplicações hospedadas. Interactive Terminal continua como prévia. A atividade técnica lista apenas os dois projetos já existentes; novos estudos de caso, automação e SQL dependem de documentação e evidências revisadas.
+Não há métricas fictícias, incidentes inventados, monitoramento, comandos executáveis ou acesso à infraestrutura privada. O Incident Explorer oferece quatro casos profissionais anonimizados, com duas simulações de processos. Infrastructure Lab documenta o servidor, os caminhos de acesso e as aplicações hospedadas. Interactive Terminal oferece comandos de portfólio e simulações de Linux e redes. A atividade técnica lista apenas os dois projetos já existentes; novos estudos de caso, automação e SQL dependem de documentação e evidências revisadas.
 
 ## Backup e estado Git
 
@@ -92,3 +92,5 @@ A branch `main` é a origem dos deploys de produção no Netlify.
 Veja os roteiros, contratos e detalhes em [Fase 2](docs/PHASE2.md).
 
 Veja também a [Fase 3.1](docs/PHASE31.md).
+
+Veja o [Interactive Terminal da Fase 4.1](docs/PHASE41.md).
