@@ -1,111 +1,168 @@
 import { expect, test } from './fixture';
 
-for (const width of [320, 375, 390, 700, 768, 959, 960, 1024, 1440, 1920]) {
-  test(`home fits ${width}px without overflow or hydration errors`, async ({ page }) => {
+const routes = [
+  ['/', 'Andrey Vinícius de Souza Silva'], ['/incidents/', 'Incident Explorer'], ['/infrastructure/', 'Infrastructure Lab'],
+  ['/terminal/', 'Interactive Terminal'], ['/projects/', 'Engineering Projects'], ['/profile/', 'Professional Profile'],
+] as const;
+
+for (const width of [320, 375, 390, 700, 768, 959, 1024, 1099, 1100, 1280, 1440, 1920]) {
+  test(`all six workspace pages fit ${width}px and hydrate without errors`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
     await page.setViewportSize({ width, height: 900 });
-    await page.goto('/');
-    await page.evaluate(() => document.fonts.ready);
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Andrey');
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();
-    expect(await page.locator('img').evaluateAll(images => images.every(image => image.complete && image.naturalWidth > 0))).toBeTruthy();
+    for (const [path, title] of routes) {
+      await page.goto(path);
+      await page.evaluate(() => document.fonts.ready);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
+      const overflow = await page.evaluate(() => Array.from(document.querySelectorAll('body *')).filter(element => {
+        const r = element.getBoundingClientRect();
+        return r.width > 1 && (r.right > innerWidth + 1 || r.left < -1);
+      }).map(element => ({ tag: element.tagName, class: element.className })));
+      expect(overflow, path).toEqual([]);
+    }
     expect(errors).toEqual([]);
   });
 }
 
-test('mobile menu supports keyboard, focus cycling, Escape and anchor navigation', async ({ page }) => {
+test('mobile navigation handles keyboard, focus trap, Escape and breakpoint changes', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
   await page.keyboard.press('Tab');
   await expect(page.getByText('Pular para o conteúdo')).toBeFocused();
-  const toggle = page.getByRole('button', { name: 'Menu' });
+  const toggle = page.getByRole('button', { name: 'Abrir navegação', exact: true });
   await toggle.focus();
   await page.keyboard.press('Enter');
-  await expect(page.getByRole('navigation').getByRole('link', { name: 'Perfil', exact: true })).toBeFocused();
+  const sidebar = page.getByRole('complementary', { name: 'Áreas do workspace' });
+  await expect(sidebar.getByRole('link', { name: 'Overview', exact: true })).toBeFocused();
+  await expect(page.locator('.workspace-body')).toHaveAttribute('inert', '');
+  await page.getByRole('button', { name: 'Fechar navegação lateral', exact: true }).focus();
+  await page.keyboard.press('Tab');
+  await expect(sidebar.getByRole('link', { name: 'Andrey IT Operations — Overview' })).toBeFocused();
   await page.keyboard.press('Shift+Tab');
-  await expect(page.getByRole('button', { name: 'Fechar' })).toBeFocused();
-  await page.keyboard.press('Shift+Tab');
-  await expect(page.getByRole('navigation').getByRole('link', { name: /Currículo PDF/ })).toBeFocused();
+  await expect(page.getByRole('button', { name: 'Fechar navegação lateral', exact: true })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(toggle).toBeFocused();
+  await expect(page.locator('.workspace-body')).not.toHaveAttribute('inert', '');
   await toggle.click();
-  await page.getByRole('navigation').getByRole('link', { name: 'Experiência', exact: true }).click();
-  await expect(page.locator('#experiencia')).toBeFocused();
-  await expect(page).toHaveURL(/#experiencia$/);
-  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await sidebar.getByRole('link', { name: 'Engineering Projects' }).click();
+  await expect(page).toHaveURL(/\/projects\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Engineering Projects');
+  await page.getByRole('button', { name: 'Abrir navegação', exact: true }).click();
+  await expect(sidebar.locator('[aria-current="page"]')).toHaveText('Engineering Projects');
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(sidebar).toBeVisible();
+  await expect(page.locator('.workspace-body')).not.toHaveAttribute('inert', '');
 });
 
-test('each future module survives direct navigation and reload', async ({ page }) => {
-  for (const [path, title] of [['/incidents/', 'Incident Explorer'], ['/infrastructure/', 'Infrastructure Lab'], ['/terminal/', 'Interactive Terminal']]) {
+test('all routes support direct access, reload and active navigation', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  for (const [path, title] of routes) {
     await page.goto(path);
     await page.reload();
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
-    await expect(page.getByText('Em desenvolvimento', { exact: true })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Navegação principal' }).locator('[aria-current="page"]')).toHaveAttribute('href', path);
+    await expect(page.getByRole('navigation', { name: 'Breadcrumb' })).toContainText(path === '/' ? 'Overview' : title);
   }
 });
 
+test('project list and detail work by keyboard and anchors resolve', async ({ page }) => {
+  await page.goto('/projects/#project-2');
+  const second = page.locator('#project-2');
+  await second.locator('summary').focus();
+  await page.keyboard.press('Enter');
+  await expect(second).toHaveAttribute('open', '');
+  await expect(second.getByRole('link', { name: /Abrir repositório/ })).toBeVisible();
+  await page.keyboard.press('Enter');
+  await expect(second).not.toHaveAttribute('open', '');
+  await page.goto('/profile/');
+  await page.getByRole('navigation', { name: 'Seções do perfil' }).getByRole('link', { name: 'Contato' }).click();
+  await expect(page).toHaveURL(/#contato$/);
+  await expect(page.getByRole('heading', { name: 'Contato profissional' })).toBeInViewport();
+});
+
 test.describe('without JavaScript', () => {
- test.use({ javaScriptEnabled: false });
- test('professional content remains visible without JavaScript', async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'Experiência na operação.' })).toBeVisible();
-  await expect(page.getByText('Souza Indústria e Comércio de Peças')).toBeVisible();
-  await expect(page.getByRole('link', { name: /Ver currículo PDF/ })).toBeVisible();
-  await expect(page.getByRole('navigation').getByRole('link', { name: 'Perfil', exact: true })).toBeVisible();
- });
+  test.use({ javaScriptEnabled: false });
+  test('essential content, six navigation routes and native project details remain available', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 812 });
+    for (const [path, title] of routes) {
+      await page.goto(path);
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
+      await expect(page.getByRole('navigation', { name: 'Navegação principal' }).getByRole('link', { name: 'Professional Profile' })).toBeVisible();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+    }
+    await expect(page.getByText('Souza Indústria e Comércio de Peças', { exact: true })).toBeVisible();
+    await expect(page.getByText('Previsão de conclusão: 2027')).toBeVisible();
+    await page.goto('/projects/');
+    await page.locator('#project-2 summary').click();
+    await expect(page.locator('#project-2').getByRole('link', { name: /Abrir repositório/ })).toBeVisible();
+  });
 });
 
-test('unknown paths return a genuine 404 and snapshots document the design', async ({ page }) => {
-  const response = await page.goto('/missing-page/');
-  expect(response?.status()).toBe(404);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Este caminho');
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto('/');
-  await page.evaluate(() => document.fonts.ready);
-  await page.screenshot({ path: 'test-results/desktop.png', fullPage: true });
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.screenshot({ path: 'test-results/mobile.png', fullPage: true });
+test('module previews expose no pretend commands or operational measurements', async ({ page }) => {
+  for (const [path] of routes.slice(1, 4)) {
+    await page.goto(path);
+    await expect(page.getByText('Em desenvolvimento', { exact: true })).toBeVisible();
+    await expect(page.locator('main input, main textarea, main canvas')).toHaveCount(0);
+    await expect(page.getByText('Sem dados operacionais', { exact: true })).toBeVisible();
+  }
 });
 
-test('reduced motion disables smooth scrolling and enlarged text fits mobile', async ({ page }) => {
+test('unknown routes retain 404 content; screenshots cover desktop and mobile', async ({ page }) => {
+  expect((await page.goto('/missing-page/'))?.status()).toBe(404);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Este caminho não existe.');
+  for (const [path, filename] of [['/', 'overview'], ['/incidents/', 'incidents'], ['/infrastructure/', 'infrastructure'], ['/terminal/', 'terminal'], ['/projects/', 'projects'], ['/profile/', 'profile']]) {
+    await page.setViewportSize({ width: 1440, height: 1080 });
+    await page.goto(path);
+    await page.evaluate(() => document.fonts.ready);
+    await page.screenshot({ path: `docs/screenshots/${filename}-desktop.png`, fullPage: true });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.screenshot({ path: `docs/screenshots/${filename}-mobile.png`, fullPage: true });
+  }
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Abrir navegação', exact: true }).click();
+  await page.screenshot({ path: 'docs/screenshots/navigation-mobile.png' });
+});
+
+test('reduced motion and text at 200% work throughout the workspace', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto('/');
-  expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto');
   await page.route('https://portfolio.test/zoom-test.css', route => route.fulfill({ contentType: 'text/css', body: 'html { font-size: 200%; }' }));
-  await page.addStyleTag({ url: 'https://portfolio.test/zoom-test.css' });
-  const overflow = await page.evaluate(() => Array.from(document.querySelectorAll('body *')).filter(element => { const r = element.getBoundingClientRect(); return r.width > 1 && (r.right > innerWidth + 1 || r.left < -1); }).map(element => ({ tag: element.tagName, class: element.className, text: element.textContent?.slice(0, 50), width: element.getBoundingClientRect().width, right: element.getBoundingClientRect().right })));
-  expect(overflow).toEqual([]);
+  for (const [path] of routes) {
+    await page.goto(path);
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto');
+    await page.addStyleTag({ url: 'https://portfolio.test/zoom-test.css' });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), path).toBeTruthy();
+  }
 });
 
-test('visible text meets WCAG AA contrast', async ({ page }) => {
-  await page.goto('/');
-  const failures = await page.evaluate(() => {
-    type RGB = [number, number, number];
-    const color = (value: string) => value.match(/[\d.]+/g)?.map(Number) ?? [0, 0, 0, 0];
-    const luminance = (rgb: RGB) => rgb.map(value => { const c = value / 255; return c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4; }).reduce((total, value, i) => total + value * [.2126, .7152, .0722][i], 0);
-    const background = (element: Element | null): RGB => {
-      if (!element) return [16, 22, 25];
-      const rgba = color(getComputedStyle(element).backgroundColor);
-      const alpha = rgba[3] ?? 1;
-      const underneath = alpha < 1 ? background(element.parentElement) : [0, 0, 0];
-      return rgba.slice(0, 3).map((value, i) => value * alpha + underneath[i] * (1 - alpha)) as RGB;
-    };
-    return Array.from(document.querySelectorAll('body *')).flatMap(element => {
-      if (!Array.from(element.childNodes).some(node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim())) return [];
-      const rect = element.getBoundingClientRect();
-      if (rect.width <= 1 || rect.height <= 1) return [];
-      const style = getComputedStyle(element);
-      if (style.visibility === 'hidden') return [];
-      const foreground = luminance(color(style.color).slice(0, 3) as RGB);
-      const bg = luminance(background(element));
-      const ratio = (Math.max(foreground, bg) + .05) / (Math.min(foreground, bg) + .05);
-      const large = parseFloat(style.fontSize) >= 24 || (parseFloat(style.fontSize) >= 18.66 && parseInt(style.fontWeight) >= 700);
-      return ratio + .01 < (large ? 3 : 4.5) ? [{ text: element.textContent?.slice(0, 70), ratio }] : [];
+test('visible text meets WCAG AA contrast on every page', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1080 });
+  for (const [path] of routes) {
+    await page.goto(path);
+    const failures = await page.evaluate(() => {
+      type RGB = [number, number, number];
+      const color = (value: string) => value.match(/[\d.]+/g)?.map(Number) ?? [0, 0, 0, 0];
+      const luminance = (rgb: RGB) => rgb.map(value => { const c = value / 255; return c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4; }).reduce((total, value, i) => total + value * [.2126, .7152, .0722][i], 0);
+      const background = (element: Element | null): RGB => {
+        if (!element) return [16, 22, 25];
+        const rgba = color(getComputedStyle(element).backgroundColor);
+        const alpha = rgba[3] ?? 1;
+        const underneath = alpha < 1 ? background(element.parentElement) : [0, 0, 0];
+        return rgba.slice(0, 3).map((value, i) => value * alpha + underneath[i] * (1 - alpha)) as RGB;
+      };
+      return Array.from(document.querySelectorAll('body *')).flatMap(element => {
+        if (!Array.from(element.childNodes).some(node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim())) return [];
+        const rect = element.getBoundingClientRect();
+        if (rect.width <= 1 || rect.height <= 1 || !element.checkVisibility()) return [];
+        const style = getComputedStyle(element);
+        const foreground = luminance(color(style.color).slice(0, 3) as RGB);
+        const bg = luminance(background(element));
+        const ratio = (Math.max(foreground, bg) + .05) / (Math.min(foreground, bg) + .05);
+        const large = parseFloat(style.fontSize) >= 24 || (parseFloat(style.fontSize) >= 18.66 && parseInt(style.fontWeight) >= 700);
+        return ratio + .01 < (large ? 3 : 4.5) ? [{ text: element.textContent?.slice(0, 70), ratio }] : [];
+      });
     });
-  });
-  expect(failures).toEqual([]);
+    expect(failures, path).toEqual([]);
+  }
 });

@@ -1,100 +1,98 @@
-# Andrey IT Operations
+# Andrey IT Operations — Workspace
 
-Portfólio profissional de **Andrey Vinícius de Souza Silva**. Foco em Analista de Suporte Técnico, Suporte N1/N2, Sistemas/ERP e Service Desk. SQL e infraestrutura integram o repertório; Java, Spring Boot e APIs REST são conhecimentos complementares.
+Portfólio de Andrey Vinícius de Souza Silva, organizado como um workspace profissional de operações de TI. Foco em Suporte N1/N2, Sistemas/ERP, Service Desk, Windows, redes e SQL. Linux, Docker e desenvolvimento aparecem como conhecimentos complementares.
+
+## Pasta deste trabalho
+
+```text
+C:\Users\Admin\Documents\Codex\2026-11-24\new-chat\work\Portifolio
+```
+
+Este checkout foi recuperado do trabalho anterior. Outras pastas locais chamadas Portifolio não foram alteradas. Abra esta pasta, que contém `package.json` e `src/`.
 
 ## Executar localmente
 
-Requer Node.js 22.12+ (recomendado: Node 24) e npm.
+Node.js 22.12+; recomendado Node 24 e npm.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Abra o endereço local informado pelo Vite. Para conferir o HTML pré-renderizado:
+Abra o endereço informado pelo Vite. Para conferir a versão pré-renderizada:
 
 ```sh
 npm run check
 npm run preview
 ```
 
-O desenvolvimento usa React no cliente; a pré-renderização ocorre no build. `dist/` é o resultado estático e não deve ser editado manualmente.
-
-## Comandos
-
 | Comando | Função |
 | --- | --- |
-| `npm run dev` | Servidor local de desenvolvimento |
-| `npm run typecheck` | TypeScript estrito, sem emissão |
-| `npm run build` | Tipagem, build cliente/servidor e pré-renderização |
-| `npm test` | Verifica HTML, links internos, assets, metadados e sitemap após o build |
-| `npm run check` | Build e testes do resultado estático |
-| `npm run test:e2e` | Testes de navegador sobre o build, usando Google Chrome instalado |
-| `npm run preview` | Preview local do build |
+| `npm run dev` | Desenvolvimento local |
+| `npm run typecheck` | TypeScript estrito |
+| `npm run build` | Build cliente/servidor e pré-renderização |
+| `npm test` | Seis testes do HTML produzido; requer build |
+| `npm run check` | Build e testes do HTML |
+| `npm run test:e2e` | Vinte testes de navegador; requer build e Chrome instalado |
+| `npm run preview` | Preview local de `dist/` |
 
-Os testes E2E abrem o build real no Google Chrome usando interceptação de requisições para um domínio reservado (`portfolio.test`), sem servidor HTTP ou acesso à internet. A fixture reproduz a política CSP de produção, mas não substitui homologação dos redirecionamentos e cabeçalhos no Netlify. Para outro navegador instalado, ajuste `channel` em `playwright.config.ts`. Não há instalação automática de navegador.
+Os testes E2E usam Google Chrome por interceptação de requisições para `portfolio.test`, servindo o build real e a CSP sem precisar de sockets locais ou publicação. Eles também geram as capturas em `docs/screenshots/`. Para outro navegador instalado, ajuste o `channel` em `playwright.config.ts`. Não há instalação automática de navegador.
 
-## Arquitetura
+## Arquitetura e rotas
 
-React + TypeScript + Vite + Tailwind CSS, com versões registradas em `package-lock.json`. Fontes Inter hospedadas localmente e ícones SVG próprios, sem dependências de CDN.
+React + TypeScript + Vite + Tailwind. Componentes por funcionalidade; perfil, experiências e projetos em dados tipados. `WorkspaceShell` reúne sidebar, menu mobile, breadcrumb, cabeçalho e área principal. Fontes locais e ícones SVG próprios, sem CDNs ou backend.
 
-- `src/app/`: composição da aplicação e seleção de página.
-- `src/components/`: navegação, links externos, títulos e rodapé.
-- `src/content/`: perfil tipado, experiências, competências, projetos, contatos e manifesto de rotas.
-- `src/features/`: perfil, projetos, contato e prévias dos módulos.
-- `src/styles/`: Tailwind, tokens e composição editorial responsiva.
-- `src/entry-server.tsx`: renderização React utilizada durante o build.
-- `scripts/prerender.mjs`: gera HTML e metadados por rota e sitemap.
-- `public/`: favicon, compartilhamento social e robots.txt.
-- `tests/`: validação do HTML produzido e fluxos E2E.
-
-## Rotas e SEO
-
-| URL | Conteúdo |
+| Rota | Conteúdo |
 | --- | --- |
-| `/` | Portfólio completo |
-| `/incidents/` | Prévia do Incident Explorer |
-| `/infrastructure/` | Prévia do Infrastructure Lab |
-| `/terminal/` | Prévia do Interactive Terminal |
-| `/404.html` | Página de erro, sem indexação |
+| `/` | Overview com perfil compacto, áreas de trabalho e atividade documentada |
+| `/incidents/` | Incident Explorer — prévia de escopo |
+| `/infrastructure/` | Infrastructure Lab — prévia de escopo |
+| `/terminal/` | Interactive Terminal — prévia de escopo |
+| `/projects/` | Engineering Projects com lista/detalhe nativa |
+| `/profile/` | Professional Profile com trajetória, competências, formação e contato |
 
-Cada rota implementada recebe HTML próprio, com conteúdo profissional legível sem JavaScript. React hidrata o conteúdo para ativar o menu mobile. Links nativos preservam navegação, histórico e URLs diretas sem adicionar um roteador cliente nesta fase. Para criar uma rota futura, atualize o manifesto, a composição e os testes; não adicione URLs que só funcionam por fallback.
+`src/content/routes.ts` centraliza navegação e rotas públicas. O build usa `renderToString` para gerar um HTML próprio para cada rota; React hidrata o menu no navegador. Links nativos preservam navegação direta, refresh e conteúdo sem JavaScript, sem roteador cliente nesta fase. `<details>` mantém os registros de projetos utilizáveis sem JavaScript.
 
-`netlify.toml` define build, pasta publicada e cabeçalhos de segurança. As rotas correspondem a diretórios com `index.html`; a normalização das barras fica com o recurso Pretty URLs do Netlify. Não há regras para adicionar ou remover barras, pois a normalização do serviço pode fazê-las entrar em loop. Não usa redirecionamento genérico para a página inicial: URLs desconhecidas mantêm resposta 404 no Netlify. Os cabeçalhos de produção não são aplicados pelo preview do Vite; precisam ser conferidos em homologação autorizada. Não há servidor Node em produção.
+`netlify.toml` publica `dist`, configura Node e cabeçalhos de segurança. Diretórios com `index.html` preservam URLs diretas; desconhecidas usam `404.html`, sem fallback genérico SPA. Pretty URLs e cabeçalhos reais exigem homologação no Netlify. O domínio canônico preservado é `https://andreyportifolio.netlify.app`; alterações futuras devem atualizar o manifesto e `public/robots.txt`.
 
-O domínio canônico preservado é `https://andreyportifolio.netlify.app`. Se mudar, atualize `src/content/routes.ts` e `public/robots.txt`. Este trabalho não publicou a nova versão.
+## Organização
 
-## Escopo da Fase 1
+- `src/app/`: seleção de página e composição.
+- `src/components/`: shell, ícones, títulos e links externos.
+- `src/content/`: dados profissionais e manifesto de rotas.
+- `src/features/`: Overview, perfil, projetos e módulos futuros.
+- `src/styles/index.css`: tokens, layouts e responsividade.
+- `scripts/prerender.mjs`: HTML, metadados e sitemap.
+- `tests/`: verificações estáticas e E2E.
+- `docs/PHASE15.md`: decisões, inventário, limites e pendências.
+- `docs/screenshots/`: capturas desktop/mobile das seis rotas e navegação mobile.
 
-Identidade grafite, azul petróleo e ciano moderado; foto original reutilizada; composição com hierarquia editorial, experiências em linhas e competências agrupadas. Sem Matrix, digitação automática ou métricas decorativas.
+## Acessibilidade e escopo
 
-As páginas dos três módulos são somente prévias de escopo, claramente identificadas como **em desenvolvimento**. Não contêm incidentes inventados, inventário de infraestrutura ou terminal executável.
+Validação da Fase 1.5: TypeScript e build aprovados, **6/6 testes de HTML e 20/20 testes E2E aprovados**. As seis páginas foram verificadas em doze larguras entre 320 e 1920px, com acesso direto, refresh, teclado, JavaScript desativado, movimento reduzido, texto a 200% e contraste de texto.
 
-Acessibilidade: link para pular conteúdo, landmarks, foco visível, menu por teclado com Escape e ciclo de foco, transferência de foco para seções, descrições de imagens e respeito a movimento reduzido. Sem JavaScript, a navegação mobile permanece disponível.
+Link para pular conteúdo, landmarks, foco visível, navegação ativa com `aria-current`, menu mobile com Escape e retorno/ciclo de foco, conteúdo de fundo `inert`, fontes escaláveis e movimento reduzido. Sem JavaScript, a navegação permanece disponível. Contraste automatizado não equivale a uma auditoria completa de acessibilidade ou validação com leitor de tela.
 
-## Conteúdo a confirmar
+Não há métricas fictícias, incidentes inventados, monitoramento, comandos executáveis ou acesso à infraestrutura privada. Os três módulos continuam como prévias identificadas. A atividade técnica lista apenas os dois projetos já existentes; estudos de caso, automação e SQL dependem de documentação e evidências revisadas.
 
-Validação da Fase 1: TypeScript e build aprovados; seis testes do HTML e dezesseis testes de navegador aprovados, incluindo larguras de 320 a 1920 px, teclado, texto ampliado, conteúdo sem JavaScript e contraste. O inventário completo de arquivos e os limites de validação estão em [docs/PHASE1.md](docs/PHASE1.md).
+## Backup e estado Git
 
-- **Instituição de ensino:** o legado informa “UNIFAI — Centro Universitário Assunção”; a identificação não foi confirmada e não é exibida na nova versão. ADS em andamento e previsão 2027 foram fornecidos pelo autor.
-- **Currículo:** link original do Google Drive preservado; é necessário confirmar acesso público e se o documento já reflete o novo posicionamento. O botão informa “Ver currículo”, sem prometer download direto.
-- **Contatos externos:** URLs existentes mantidas e normalizadas. Sintaxe validada; LinkedIn, Instagram e Drive impediram verificação automática de acesso. WhatsApp e e-mail dependem dos respectivos serviços/aplicativos.
-- **Projetos:** descrições e links reaproveitados do legado, sem alegações novas sobre resultados ou estado atual de execução.
-- Não foram incluídos certificados sem comprovação nem afirmação de fluência em inglês.
-
-## Referência recuperável
-
-Antes da migração, a versão original foi preservada localmente em `backup/pre-it-operations`, no commit **bbd5730cead4237143f97f2c69483498fd57968f**. Desenvolvimento em `feat/it-operations-foundation`.
-
-Como o terminal não tinha resolução de rede, os seis arquivos originais foram recuperados pelo conector GitHub. Seus blobs e a árvore Git foram conferidos contra o commit original; o checkout local contém esse commit exato como base rasa, sem os ancestrais. Nenhum commit de implementação ou push foi criado. Em ambiente com rede, `git fetch --unshallow origin` recupera o histórico anterior.
-
-Para consultar a versão anterior sem descartar o trabalho atual:
+Fase 1 preservada no commit `50e41d2`, referência `backup/phase1-foundation`, antes do redesign. Trabalho atual em `feat/it-operations-workspace`.
 
 ```sh
-git show backup/pre-it-operations:index.html
-git archive backup/pre-it-operations -o ../portfolio-anterior.zip
+git show backup/phase1-foundation:src/app/App.tsx
+git archive backup/phase1-foundation -o ../portfolio-fase1.zip
 ```
 
-## Publicação
+O legado anterior ao React permanece em `backup/pre-it-operations`, commit `bbd5730cead4237143f97f2c69483498fd57968f`. A base foi recuperada pelo conector GitHub como histórico raso; em ambiente com rede, `git fetch --unshallow origin` recupera os ancestrais. A Fase 1.5 permanece como alterações locais para revisão.
 
-Não há automação de deploy nesta entrega. Push e deploy exigem autorização do proprietário. Se o repositório já estiver conectado ao Netlify, um push futuro pode acionar a publicação configurada nesse serviço; revisar essa configuração antes de enviar alterações.
+## Pendências
+
+- Confirmar instituição de ensino: o nome do legado não foi confirmado; a página mantém ADS em andamento, previsão 2027.
+- Confirmar acesso público e atualização do currículo no Google Drive.
+- Validar os serviços externos de contato; URLs existentes foram preservadas, sem envio de mensagens.
+- Documentar casos de suporte e inventário de laboratório para as próximas fases.
+- Homologar Pretty URLs, cabeçalhos e status HTTP no Netlify quando houver autorização.
+- A imagem de compartilhamento social da Fase 1 foi preservada.
+
+**Nenhum push ou deploy foi realizado.** Um push futuro pode acionar o Netlify se o repositório já estiver conectado ao serviço; revisar a configuração antes de publicar.

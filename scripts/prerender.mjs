@@ -1,11 +1,11 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import { render, modules, routeMetadata, siteUrl } from '../.prerender/entry-server.js';
+import { render, publicPaths, routeMetadata, siteUrl } from '../.prerender/entry-server.js';
 
 const template = await readFile('dist/index.html', 'utf8');
 if (!template.includes('<!--app-html-->')) throw new Error('Missing prerender template marker');
 const escape = text => text.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
-const routes = ['/', ...modules.map(module => module.path), '/404.html'];
+const routes = [...publicPaths, '/404.html'];
 for (const path of routes) {
   const meta = routeMetadata(path);
   const canonical = `${siteUrl}${meta.path}`;

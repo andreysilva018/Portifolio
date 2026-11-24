@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 import { join } from 'node:path';
 
-const paths = ['/', '/incidents/', '/infrastructure/', '/terminal/'];
+const paths = ['/', '/incidents/', '/infrastructure/', '/terminal/', '/projects/', '/profile/'];
 const pageFile = path => join('dist', path.slice(1), 'index.html');
 
 test('all public routes contain rendered headings and unique canonical metadata', async () => {
@@ -21,8 +21,8 @@ test('all public routes contain rendered headings and unique canonical metadata'
 });
 
 test('professional content is present without executing JavaScript', async () => {
-  const html = await readFile('dist/index.html', 'utf8');
-  for (const text of ['Suporte técnico N1/N2', 'Souza Indústria', 'Doctus Tecnologia', '2026-11', 'Análise e Desenvolvimento de Sistemas', '2027']) assert.ok(html.includes(text), text);
+  const html = await readFile('dist/profile/index.html', 'utf8');
+  for (const text of ['Suporte N1/N2', 'Souza Indústria', 'Doctus Tecnologia', '2026-11', 'Análise e Desenvolvimento de Sistemas', '2027']) assert.ok(html.includes(text), text);
   assert.ok(!/Desenvolvedor Java Júnior|primeira vaga como desenvolvedor|Abril\/2025 – atual|Centro Universitário Assunção/.test(html));
 });
 
@@ -46,7 +46,7 @@ test('internal links, section anchors and assets resolve to generated files', as
 });
 
 test('future modules clearly disclose their unfinished state', async () => {
-  for (const path of paths.slice(1)) {
+  for (const path of paths.slice(1, 4)) {
     const html = await readFile(pageFile(path), 'utf8');
     assert.match(html, /Em desenvolvimento/);
     assert.match(html, /prévia de escopo/);

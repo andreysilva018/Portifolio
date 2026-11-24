@@ -1,4 +1,17 @@
+import type { IconName } from '../components/WorkspaceIcon';
+
 export const siteUrl = 'https://andreyportifolio.netlify.app';
+
+interface NavigationItem { path: string; name: string; icon: IconName; group: 'Workspace' | 'Biblioteca'; future?: boolean }
+export const navigation: NavigationItem[] = [
+  { path: '/', name: 'Overview', icon: 'overview', group: 'Workspace' },
+  { path: '/incidents/', name: 'Incident Explorer', icon: 'incident', group: 'Workspace', future: true },
+  { path: '/infrastructure/', name: 'Infrastructure Lab', icon: 'infrastructure', group: 'Workspace', future: true },
+  { path: '/terminal/', name: 'Interactive Terminal', icon: 'terminal', group: 'Workspace', future: true },
+  { path: '/projects/', name: 'Engineering Projects', icon: 'projects', group: 'Biblioteca' },
+  { path: '/profile/', name: 'Professional Profile', icon: 'profile', group: 'Biblioteca' },
+];
+export const publicPaths = navigation.map(item => item.path);
 
 export interface ModuleDefinition {
   path: string;
@@ -20,6 +33,8 @@ export function normalizePath(path: string): string {
 }
 
 export function routeMetadata(path: string) {
+  if (normalizePath(path) === '/projects/') return { title: 'Engineering Projects | Andrey IT Operations', description: 'Projetos documentados de software, Java e persistência relacional. Conhecimentos complementares ao suporte de sistemas.', path: '/projects/' };
+  if (normalizePath(path) === '/profile/') return { title: 'Professional Profile | Andrey Vinícius', description: 'Experiência profissional, competências, formação e contato de Andrey Vinícius de Souza Silva. Suporte N1/N2, ERP e Service Desk.', path: '/profile/' };
   const module = modules.find(item => item.path === normalizePath(path));
   if (module) return { title: `${module.name} | Andrey IT Operations`, description: `${module.description} Módulo em desenvolvimento.`, path: module.path };
   if (normalizePath(path) === '/') return { title: 'Andrey Vinícius | Suporte de TI, Sistemas e ERP', description: 'Portfólio de Andrey Vinícius de Souza Silva. Suporte técnico N1/N2, sistemas ERP, Service Desk, SQL e infraestrutura. Desenvolvimento como competência complementar.', path: '/' };
