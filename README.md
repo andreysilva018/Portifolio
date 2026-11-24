@@ -2,14 +2,6 @@
 
 Portfólio de Andrey Vinícius de Souza Silva, organizado como um workspace profissional de operações de TI. Foco em Suporte N1/N2, Sistemas/ERP, Service Desk, Windows, redes e SQL. Linux, Docker e desenvolvimento aparecem como conhecimentos complementares.
 
-## Pasta deste trabalho
-
-```text
-C:\Users\Admin\Documents\Codex\2026-11-24\new-chat\work\Portifolio
-```
-
-Este checkout foi recuperado do trabalho anterior. Outras pastas locais chamadas Portifolio não foram alteradas. Abra esta pasta, que contém `package.json` e `src/`.
-
 ## Executar localmente
 
 Node.js 22.12+; recomendado Node 24 e npm.
@@ -31,9 +23,9 @@ npm run preview
 | `npm run dev` | Desenvolvimento local |
 | `npm run typecheck` | TypeScript estrito |
 | `npm run build` | Build cliente/servidor e pré-renderização |
-| `npm test` | Seis testes do HTML produzido; requer build |
+| `npm test` | Testes do HTML produzido; requer build |
 | `npm run check` | Build e testes do HTML |
-| `npm run test:e2e` | Vinte testes de navegador; requer build e Chrome instalado |
+| `npm run test:e2e` | Suíte de testes de navegador; requer build e Chrome instalado |
 | `npm run preview` | Preview local de `dist/` |
 
 Os testes E2E usam Google Chrome por interceptação de requisições para `portfolio.test`, servindo o build real e a CSP sem precisar de sockets locais ou publicação. Eles também geram as capturas em `docs/screenshots/`. Para outro navegador instalado, ajuste o `channel` em `playwright.config.ts`. Não há instalação automática de navegador.
@@ -45,8 +37,8 @@ React + TypeScript + Vite + Tailwind. Componentes por funcionalidade; perfil, ex
 | Rota | Conteúdo |
 | --- | --- |
 | `/` | Overview com perfil compacto, áreas de trabalho e atividade documentada |
-| `/incidents/` | Incident Explorer — prévia de escopo |
-| `/infrastructure/` | Infrastructure Lab — prévia de escopo |
+| `/incidents/` | Incident Explorer com catálogo, filtros e páginas individuais |
+| `/infrastructure/` | Infrastructure Lab com topologia interativa e inventário |
 | `/terminal/` | Interactive Terminal — prévia de escopo |
 | `/projects/` | Engineering Projects com lista/detalhe nativa |
 | `/profile/` | Professional Profile com trajetória, competências, formação e contato |
@@ -73,18 +65,18 @@ Validação da Fase 1.5: TypeScript e build aprovados, **6/6 testes de HTML e 20
 
 Link para pular conteúdo, landmarks, foco visível, navegação ativa com `aria-current`, menu mobile com Escape e retorno/ciclo de foco, conteúdo de fundo `inert`, fontes escaláveis e movimento reduzido. Sem JavaScript, a navegação permanece disponível. Contraste automatizado não equivale a uma auditoria completa de acessibilidade ou validação com leitor de tela.
 
-Não há métricas fictícias, incidentes inventados, monitoramento, comandos executáveis ou acesso à infraestrutura privada. Os três módulos continuam como prévias identificadas. A atividade técnica lista apenas os dois projetos já existentes; estudos de caso, automação e SQL dependem de documentação e evidências revisadas.
+Não há métricas fictícias, incidentes inventados, monitoramento, comandos executáveis ou acesso à infraestrutura privada. O Incident Explorer oferece quatro casos profissionais anonimizados, com duas simulações de processos. Infrastructure Lab documenta o servidor, os caminhos de acesso e as aplicações hospedadas. Interactive Terminal continua como prévia. A atividade técnica lista apenas os dois projetos já existentes; novos estudos de caso, automação e SQL dependem de documentação e evidências revisadas.
 
 ## Backup e estado Git
 
-Fase 1 preservada no commit `50e41d2`, referência `backup/phase1-foundation`, antes do redesign. Trabalho atual em `feat/it-operations-workspace`.
+Fase 1 preservada no commit `50e41d2`, referência `backup/phase1-foundation`, antes do redesign.
 
 ```sh
 git show backup/phase1-foundation:src/app/App.tsx
 git archive backup/phase1-foundation -o ../portfolio-fase1.zip
 ```
 
-O legado anterior ao React permanece em `backup/pre-it-operations`, commit `bbd5730cead4237143f97f2c69483498fd57968f`. A base foi recuperada pelo conector GitHub como histórico raso; em ambiente com rede, `git fetch --unshallow origin` recupera os ancestrais. A Fase 1.5 permanece como alterações locais para revisão.
+A versão anterior ao React está no commit `bbd5730cead4237143f97f2c69483498fd57968f`. O checkout de trabalho também preserva a referência local `backup/pre-it-operations`.
 
 ## Pendências
 
@@ -95,4 +87,8 @@ O legado anterior ao React permanece em `backup/pre-it-operations`, commit `bbd5
 - Homologar Pretty URLs, cabeçalhos e status HTTP no Netlify quando houver autorização.
 - A imagem de compartilhamento social da Fase 1 foi preservada.
 
-**Nenhum push ou deploy foi realizado.** Um push futuro pode acionar o Netlify se o repositório já estiver conectado ao serviço; revisar a configuração antes de publicar.
+A branch `main` é a origem dos deploys de produção no Netlify.
+
+Veja os roteiros, contratos e detalhes em [Fase 2](docs/PHASE2.md).
+
+Veja também a [Fase 3.1](docs/PHASE31.md).

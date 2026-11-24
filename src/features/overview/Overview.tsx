@@ -4,7 +4,7 @@ import { experiences, profile } from '../../content/profile';
 import { modules } from '../../content/routes';
 
 const moduleSummaries = {
-  incident: 'Casos de suporte: do diagnóstico à validação da solução.',
+  incident: 'Casos profissionais de ERP, redes e automação.',
   infrastructure: 'Topologia e documentação de ambientes de laboratório.',
   terminal: 'Navegação pelo portfólio em um terminal simulado.',
 };
@@ -33,7 +33,7 @@ export function Overview() {
           <a className="module-row" href={module.path}>
             <span className="module-symbol"><WorkspaceIcon name={module.icon} /></span>
             <div><h3>{module.name}</h3><p>{moduleSummaries[module.icon]}</p></div>
-            <span className="status">Em desenvolvimento</span>
+            <span className="status">{module.icon === 'incident' ? 'Casos técnicos' : module.icon === 'infrastructure' ? 'Arquitetura documentada' : 'Em desenvolvimento'}</span>
             <WorkspaceIcon name="arrow" />
           </a>
         </li>)}

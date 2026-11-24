@@ -1,3 +1,4 @@
+import { archivedIncidentPaths, incidentBasePath, incidentForPath, incidentPath, incidents } from './incidents';
 import type { IconName } from '../components/WorkspaceIcon';
 
 export const siteUrl = 'https://andreyportifolio.netlify.app';
@@ -5,13 +6,15 @@ export const siteUrl = 'https://andreyportifolio.netlify.app';
 interface NavigationItem { path: string; name: string; icon: IconName; group: 'Workspace' | 'Biblioteca'; future?: boolean }
 export const navigation: NavigationItem[] = [
   { path: '/', name: 'Overview', icon: 'overview', group: 'Workspace' },
-  { path: '/incidents/', name: 'Incident Explorer', icon: 'incident', group: 'Workspace', future: true },
-  { path: '/infrastructure/', name: 'Infrastructure Lab', icon: 'infrastructure', group: 'Workspace', future: true },
+  { path: incidentBasePath, name: 'Incident Explorer', icon: 'incident', group: 'Workspace' },
+  { path: '/infrastructure/', name: 'Infrastructure Lab', icon: 'infrastructure', group: 'Workspace' },
   { path: '/terminal/', name: 'Interactive Terminal', icon: 'terminal', group: 'Workspace', future: true },
   { path: '/projects/', name: 'Engineering Projects', icon: 'projects', group: 'Biblioteca' },
   { path: '/profile/', name: 'Professional Profile', icon: 'profile', group: 'Biblioteca' },
 ];
-export const publicPaths = navigation.map(item => item.path);
+export const publicPaths = [...navigation.map(item => item.path), ...incidents.map(incidentPath)];
+
+export const renderedPaths = [...publicPaths, ...archivedIncidentPaths];
 
 export interface ModuleDefinition {
   path: string;
@@ -33,6 +36,14 @@ export function normalizePath(path: string): string {
 }
 
 export function routeMetadata(path: string) {
+  if (normalizePath(path) === '/infrastructure/') return {
+    title: 'Infrastructure Lab | Andrey IT Operations',
+    description: 'Topologia e inventário do laboratório Linux: HP ProLiant ML30 Gen, Docker, acesso interno pela LAN e publicação de agendamento via Cloudflare Tunnel.',
+    path: '/infrastructure/',
+  };
+  const incident = incidentForPath(normalizePath(path));
+  if (incident) return { title: incident.id + ' — ' + incident.title + ' | Incident Explorer', description: incident.description + (incident.origin === 'Experiência profissional' ? ' Relato profissional anonimizado.' : ' Roteiro demonstrativo não executado.'), path: incidentPath(incident) };
+  if (normalizePath(path) === incidentBasePath) return { title: 'Incident Explorer | Andrey IT Operations', description: 'Casos profissionais anonimizados de ERP, redes corporativas e automação com Python e OCR.', path: incidentBasePath };
   if (normalizePath(path) === '/projects/') return { title: 'Engineering Projects | Andrey IT Operations', description: 'Projetos documentados de software, Java e persistência relacional. Conhecimentos complementares ao suporte de sistemas.', path: '/projects/' };
   if (normalizePath(path) === '/profile/') return { title: 'Professional Profile | Andrey Vinícius', description: 'Experiência profissional, competências, formação e contato de Andrey Vinícius de Souza Silva. Suporte N1/N2, ERP e Service Desk.', path: '/profile/' };
   const module = modules.find(item => item.path === normalizePath(path));

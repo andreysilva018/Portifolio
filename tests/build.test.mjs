@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 import { join } from 'node:path';
 
-const paths = ['/', '/incidents/', '/infrastructure/', '/terminal/', '/projects/', '/profile/'];
+const paths = ['/', '/incidents/', '/infrastructure/', '/terminal/', '/projects/', '/profile/', '/incidents/falha-conectividade-rede-corporativa/', '/incidents/catalogos-tecnicos/', '/incidents/automacao-boletos/', '/incidents/inconsistencia-erp/'];
 const pageFile = path => join('dist', path.slice(1), 'index.html');
 
 test('all public routes contain rendered headings and unique canonical metadata', async () => {
@@ -46,7 +46,7 @@ test('internal links, section anchors and assets resolve to generated files', as
 });
 
 test('future modules clearly disclose their unfinished state', async () => {
-  for (const path of paths.slice(1, 4)) {
+  for (const path of ['/terminal/']) {
     const html = await readFile(pageFile(path), 'utf8');
     assert.match(html, /Em desenvolvimento/);
     assert.match(html, /prévia de escopo/);
@@ -67,4 +67,31 @@ test('social preview is a real PNG with matching dimensions', async () => {
   assert.equal(png.subarray(1, 4).toString(), 'PNG');
   assert.equal(png.readUInt32BE(16), 1200);
   assert.equal(png.readUInt32BE(20), 630);
+});
+
+test('legacy DNS URL redirects to the canonical professional case', async () => {
+  const config = await readFile('netlify.toml', 'utf8');
+  assert.match(config, /from = "\/incidents\/diagnostico-dns\/"\s+to = "\/incidents\/falha-conectividade-rede-corporativa\/"\s+status = 301/);
+  const html = await readFile(pageFile('/incidents/falha-conectividade-rede-corporativa/'), 'utf8');
+  assert.match(html, /CASE-002/);
+  assert.match(html, /Antes da reorganização/);
+  assert.match(html, /Depois da reorganização/);
+  assert.doesNotMatch(await readFile('dist/sitemap.xml', 'utf8'), /diagnostico-dns/);
+});
+
+test('the archived lab stays reachable but is absent from the catalogue and sitemap', async () => {
+  const archived = await readFile(pageFile('/incidents/conectividade-de-rede/'), 'utf8');
+  assert.match(archived, /name="robots" content="noindex"/);
+  assert.match(archived, /LAB-002/);
+  assert.doesNotMatch(await readFile(pageFile('/incidents/'), 'utf8'), /LAB-002/);
+  assert.doesNotMatch(await readFile('dist/sitemap.xml', 'utf8'), /conectividade-de-rede/);
+});
+
+test('infrastructure HTML includes the documented host, inventory and distinct access paths', async () => {
+  const html = await readFile(pageFile('/infrastructure/'), 'utf8');
+  for (const text of ['HP ProLiant ML30 Gen', 'Ubuntu Server 26.04.1 LTS', 'Cloudflare Tunnel', 'IP privado do HP ML30', 'Hosted Applications', 'CASE-004']) {
+    assert.ok(html.includes(text), text);
+  }
+  assert.match(html, /<title>Infrastructure Lab/);
+  assert.doesNotMatch(html, /Em desenvolvimento<\/span>/);
 });

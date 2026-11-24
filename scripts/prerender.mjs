@@ -1,15 +1,15 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import { render, publicPaths, routeMetadata, siteUrl } from '../.prerender/entry-server.js';
+import { render, publicPaths, renderedPaths, routeMetadata, siteUrl } from '../.prerender/entry-server.js';
 
 const template = await readFile('dist/index.html', 'utf8');
 if (!template.includes('<!--app-html-->')) throw new Error('Missing prerender template marker');
 const escape = text => text.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
-const routes = [...publicPaths, '/404.html'];
+const routes = [...renderedPaths, '/404.html'];
 for (const path of routes) {
   const meta = routeMetadata(path);
   const canonical = `${siteUrl}${meta.path}`;
-  const head = `${path === '/404.html' ? '<meta name="robots" content="noindex" />' : `<link rel="canonical" href="${canonical}" />`}
+  const head = `${publicPaths.includes(path) ? `<link rel="canonical" href="${canonical}" />` : '<meta name="robots" content="noindex" />'}
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Andrey IT Operations" />
@@ -30,4 +30,4 @@ for (const path of routes) {
   await writeFile(join(directory, path === '/404.html' ? '404.html' : 'index.html'), html);
   console.log(`Pre-rendered ${path}`);
 }
-await writeFile('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.filter(path => path !== '/404.html').map(path => `<url><loc>${siteUrl}${path}</loc></url>`).join('')}</urlset>`);
+await writeFile('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${publicPaths.map(path => `<url><loc>${siteUrl}${path}</loc></url>`).join('')}</urlset>`);

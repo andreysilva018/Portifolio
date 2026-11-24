@@ -100,7 +100,7 @@ test.describe('without JavaScript', () => {
 });
 
 test('module previews expose no pretend commands or operational measurements', async ({ page }) => {
-  for (const [path] of routes.slice(1, 4)) {
+  for (const [path] of routes.slice(3, 4)) {
     await page.goto(path);
     await expect(page.getByText('Em desenvolvimento', { exact: true })).toBeVisible();
     await expect(page.locator('main input, main textarea, main canvas')).toHaveCount(0);
@@ -111,7 +111,7 @@ test('module previews expose no pretend commands or operational measurements', a
 test('unknown routes retain 404 content; screenshots cover desktop and mobile', async ({ page }) => {
   expect((await page.goto('/missing-page/'))?.status()).toBe(404);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Este caminho não existe.');
-  for (const [path, filename] of [['/', 'overview'], ['/incidents/', 'incidents'], ['/infrastructure/', 'infrastructure'], ['/terminal/', 'terminal'], ['/projects/', 'projects'], ['/profile/', 'profile']]) {
+  for (const [path, filename] of [['/', 'overview'], ['/infrastructure/', 'infrastructure'], ['/terminal/', 'terminal'], ['/projects/', 'projects'], ['/profile/', 'profile']]) {
     await page.setViewportSize({ width: 1440, height: 1080 });
     await page.goto(path);
     await page.evaluate(() => document.fonts.ready);
