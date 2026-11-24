@@ -95,3 +95,10 @@ test('infrastructure HTML includes the documented host, inventory and distinct a
   assert.match(html, /<title>Infrastructure Lab/);
   assert.doesNotMatch(html, /Em desenvolvimento<\/span>/);
 });
+
+test('connectivity references and simulation notice are pre-rendered', async () => {
+  const html = await readFile(pageFile('/infrastructure/'), 'utf8');
+  for (const text of ['Connectivity Explorer', 'Rede Cloudflare', 'Fluxo conceitual de administração remota', 'Troubleshooting Simulator', 'Cenários fictícios', 'Aplicação interna inativa neste cenário.']) {
+    assert.ok(html.includes(text), text);
+  }
+});

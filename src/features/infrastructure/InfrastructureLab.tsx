@@ -1,3 +1,4 @@
+import { ConnectivityWorkspace } from './ConnectivityWorkspace';
 import { useState } from 'react';
 import { ExternalLink } from '../../components/ExternalLink';
 import { PageHeading } from '../../components/PageHeading';
@@ -26,6 +27,7 @@ export function InfrastructureLab() {
       </ul>
     </section>
     <InteractiveTopology />
+    <ConnectivityWorkspace />
     <ComponentInventory />
     <HostedApplications />
   </div>;
