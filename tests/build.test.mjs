@@ -1,0 +1,70 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile, access } from 'node:fs/promises';
+import { join } from 'node:path';
+
+const paths = ['/', '/incidents/', '/infrastructure/', '/terminal/'];
+const pageFile = path => join('dist', path.slice(1), 'index.html');
+
+test('all public routes contain rendered headings and unique canonical metadata', async () => {
+  const titles = new Set();
+  for (const path of paths) {
+    const html = await readFile(pageFile(path), 'utf8');
+    assert.equal((html.match(/<h1\b/g) ?? []).length, 1, path);
+    assert.match(html, new RegExp(`rel="canonical" href="https://andreyportifolio.netlify.app${path}"`));
+    assert.ok(!html.includes('<!--app-html-->'));
+    const title = html.match(/<title>(.*?)<\/title>/)?.[1];
+    assert.ok(title);
+    titles.add(title);
+  }
+  assert.equal(titles.size, paths.length);
+});
+
+test('professional content is present without executing JavaScript', async () => {
+  const html = await readFile('dist/index.html', 'utf8');
+  for (const text of ['Suporte técnico N1/N2', 'Souza Indústria', 'Doctus Tecnologia', '2026-11', 'Análise e Desenvolvimento de Sistemas', '2027']) assert.ok(html.includes(text), text);
+  assert.ok(!/Desenvolvedor Java Júnior|primeira vaga como desenvolvedor|Abril\/2025 – atual|Centro Universitário Assunção/.test(html));
+});
+
+test('internal links, section anchors and assets resolve to generated files', async () => {
+  for (const path of paths) {
+    const html = await readFile(pageFile(path), 'utf8');
+    const urls = [...html.matchAll(/(?:href|src)="([^"]+)"/g)].map(match => match[1]);
+    for (const url of urls) {
+      assert.ok(url.length > 0, 'Empty URL');
+      if (/^(https:|mailto:|data:)/.test(url)) continue;
+      const [target, anchor] = url.split('#');
+      const destination = decodeURIComponent(target || path);
+      const file = destination.endsWith('/') ? pageFile(destination) : join('dist', destination.replace(/^\//, ''));
+      await access(file);
+      if (anchor) {
+        const content = await readFile(file, 'utf8');
+        assert.ok(content.includes(`id="${anchor}"`), `${url} on ${path}`);
+      }
+    }
+  }
+});
+
+test('future modules clearly disclose their unfinished state', async () => {
+  for (const path of paths.slice(1)) {
+    const html = await readFile(pageFile(path), 'utf8');
+    assert.match(html, /Em desenvolvimento/);
+    assert.match(html, /prévia de escopo/);
+    assert.ok(!/<input|<textarea|<canvas/.test(html));
+  }
+});
+
+test('404 is not indexed and sitemap only includes implemented public routes', async () => {
+  const html = await readFile('dist/404.html', 'utf8');
+  assert.match(html, /name="robots" content="noindex"/);
+  const sitemap = await readFile('dist/sitemap.xml', 'utf8');
+  assert.equal((sitemap.match(/<loc>/g) ?? []).length, paths.length);
+  assert.ok(!sitemap.includes('404'));
+});
+
+test('social preview is a real PNG with matching dimensions', async () => {
+  const png = await readFile('dist/social-preview.png');
+  assert.equal(png.subarray(1, 4).toString(), 'PNG');
+  assert.equal(png.readUInt32BE(16), 1200);
+  assert.equal(png.readUInt32BE(20), 630);
+});

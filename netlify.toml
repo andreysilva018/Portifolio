@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+[build.environment]
+  NODE_VERSION = "24"
+# All implemented routes have their own pre-rendered HTML. No blanket SPA fallback.
+# Unknown paths retain Netlify's real 404 status and use dist/404.html.
+# Netlify normalizes trailing slashes before evaluating redirect rules.
+# Pretty URLs and physical index.html files handle directory routes.
+# Do not add same-path slash redirects: they can create redirect loops.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests"
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
