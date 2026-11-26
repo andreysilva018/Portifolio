@@ -1,23 +1,110 @@
-.connectivity-body { padding: 1rem; }
-.connectivity-body .connectivity-interactive { display: none; }
-.has-js .connectivity-body .connectivity-interactive { display: block; }
-.connectivity-picker { display: grid; gap: .35rem; max-width: 36rem; margin-bottom: .7rem; }
-.connectivity-picker select { width: 100%; min-width: 0; min-height: 44px; padding: .45rem .55rem; border: 1px solid #5a747f; border-radius: 4px; color: #e5ebee; background: #121f26; }
-.connectivity-scope { color: var(--muted); margin-bottom: .75rem; }
-.connectivity-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.2fr); gap: .75rem; margin-top: .75rem; }
-.connectivity-steps, .simulation-checks { display: grid; align-content: start; gap: .45rem; }
-.connectivity-steps li + li::before { content: '↓'; display: block; padding-inline-start: .7rem; color: var(--accent); }
-.connectivity-steps .mono { margin-inline-end: .4rem; }
-.connectivity-facts dt { margin-top: .45rem; font-weight: 600; }
-.connectivity-facts dd, .simulation-observations p { color: var(--muted); }
-.simulator-grid h3 { font-size: var(--type-panel); font-weight: 600; margin-bottom: .4rem; }
-.simulation-observations li + li { border-top: 1px solid var(--line); margin-top: .5rem; padding-top: .5rem; }
-.simulation-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; margin-top: .75rem; }
-.simulation-actions .text-link { min-height: 44px; }
-.simulation-result:not(:empty) { margin-top: .7rem; border-left: 2px solid var(--accent); padding-inline-start: .65rem; }
-.simulation-result h4 { font-weight: 600; }
-.connectivity-reference { border-top: 1px solid var(--line); margin-top: .65rem; padding-top: .65rem; }
-.connectivity-reference summary { color: var(--accent); cursor: pointer; }
-.connectivity-reference h3 { margin-top: .65rem; font-weight: 600; }
-@media (max-width: 760px) { .connectivity-grid { grid-template-columns: minmax(0, 1fr); } }
-@media (prefers-reduced-motion: reduce) { .connectivity * { transition: none; animation: none; } }
+.connectivity-body {
+  padding: 1rem;
+}
+.connectivity-body .connectivity-interactive {
+  display: none;
+}
+.has-js .connectivity-body .connectivity-interactive {
+  display: block;
+}
+.connectivity-picker {
+  display: grid;
+  gap: 0.35rem;
+  max-width: 36rem;
+  margin-bottom: 0.7rem;
+}
+.connectivity-picker select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid #5a747f;
+  border-radius: 4px;
+  color: #e5ebee;
+  background: #121f26;
+}
+.connectivity-scope {
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+.connectivity-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr);
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+.connectivity-steps,
+.simulation-checks {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+}
+.connectivity-steps li + li::before {
+  content: "↓";
+  display: block;
+  padding-inline-start: 0.7rem;
+  color: var(--accent);
+}
+.connectivity-steps .mono {
+  margin-inline-end: 0.4rem;
+}
+.connectivity-facts dt {
+  margin-top: 0.45rem;
+  font-weight: 600;
+}
+.connectivity-facts dd,
+.simulation-observations p {
+  color: var(--muted);
+}
+.simulator-grid h3 {
+  font-size: var(--type-panel);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.simulation-observations li + li {
+  border-top: 1px solid var(--line);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+}
+.simulation-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+.simulation-actions .text-link {
+  min-height: 44px;
+}
+.simulation-result:not(:empty) {
+  margin-top: 0.7rem;
+  border-left: 2px solid var(--accent);
+  padding-inline-start: 0.65rem;
+}
+.simulation-result h4 {
+  font-weight: 600;
+}
+.connectivity-reference {
+  border-top: 1px solid var(--line);
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+}
+.connectivity-reference summary {
+  color: var(--accent);
+  cursor: pointer;
+}
+.connectivity-reference h3 {
+  margin-top: 0.65rem;
+  font-weight: 600;
+}
+@media (max-width: 760px) {
+  .connectivity-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .connectivity * {
+    transition: none;
+    animation: none;
+  }
+}
