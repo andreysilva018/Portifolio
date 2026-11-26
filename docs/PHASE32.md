@@ -10,19 +10,19 @@ Na rota '/infrastructure/', o Connectivity Explorer detalha três caminhos de ac
 
 ## Caminhos
 
-| Caminho | Escopo |
-| --- | --- |
-| Externo | Domínio, rede Cloudflare, conector cloudflared e resposta do agendamento no HP ML30. |
-| Interno | Cliente na LAN, endereço privado do host e resposta da aplicação de boletos. |
+| Caminho        | Escopo                                                                                                                                                                     |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Externo        | Domínio, rede Cloudflare, conector cloudflared e resposta do agendamento no HP ML30.                                                                                       |
+| Interno        | Cliente na LAN, endereço privado do host e resposta da aplicação de boletos.                                                                                               |
 | Administrativo | Exemplo conceitual de conectividade privada com Tailscale e serviço OpenSSH. As duas ferramentas estão instaladas. A configuração conjunta do exemplo não está confirmada. |
 
 ## Cenários fictícios
 
-| Sintoma | Observações decisivas | Conclusão da simulação |
-| --- | --- | --- |
-| Domínio não acessa o agendamento | Túnel conectado e origem sem resposta | Serviço de origem indisponível |
-| Aplicação de boletos indisponível | Host alcançável e aplicação inativa | Aplicação interna inativa |
-| Sessão administrativa indisponível | Conexão privada disponível e SSH indisponível | Serviço SSH indisponível |
+| Sintoma                            | Observações decisivas                         | Conclusão da simulação         |
+| ---------------------------------- | --------------------------------------------- | ------------------------------ |
+| Domínio não acessa o agendamento   | Túnel conectado e origem sem resposta         | Serviço de origem indisponível |
+| Aplicação de boletos indisponível  | Host alcançável e aplicação inativa           | Aplicação interna inativa      |
+| Sessão administrativa indisponível | Conexão privada disponível e SSH indisponível | Serviço SSH indisponível       |
 
 Todos os resultados vêm de dados locais. As interações não acessam o servidor, não executam comandos e não usam endereços, credenciais ou logs reais. As referências e explicações estão no HTML inicial. A seleção de etapas e a simulação interativa requerem JavaScript.
 

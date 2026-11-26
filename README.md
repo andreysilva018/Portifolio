@@ -18,15 +18,15 @@ npm run check
 npm run preview
 ```
 
-| Comando | Função |
-| --- | --- |
-| `npm run dev` | Desenvolvimento local |
-| `npm run typecheck` | TypeScript estrito |
-| `npm run build` | Build cliente/servidor e pré-renderização |
-| `npm test` | Testes do HTML produzido; requer build |
-| `npm run check` | Build e testes do HTML |
-| `npm run test:e2e` | Suíte de testes de navegador; requer build e Chrome instalado |
-| `npm run preview` | Preview local de `dist/` |
+| Comando             | Função                                                        |
+| ------------------- | ------------------------------------------------------------- |
+| `npm run dev`       | Desenvolvimento local                                         |
+| `npm run typecheck` | TypeScript estrito                                            |
+| `npm run build`     | Build cliente/servidor e pré-renderização                     |
+| `npm test`          | Testes do HTML produzido; requer build                        |
+| `npm run check`     | Build e testes do HTML                                        |
+| `npm run test:e2e`  | Suíte de testes de navegador; requer build e Chrome instalado |
+| `npm run preview`   | Preview local de `dist/`                                      |
 
 Os testes E2E usam Google Chrome por interceptação de requisições para `portfolio.test`, servindo o build real e a CSP sem precisar de sockets locais ou publicação. Eles também geram as capturas em `docs/screenshots/`. Para outro navegador instalado, ajuste o `channel` em `playwright.config.ts`. Não há instalação automática de navegador.
 
@@ -34,14 +34,14 @@ Os testes E2E usam Google Chrome por interceptação de requisições para `port
 
 React + TypeScript + Vite + Tailwind. Componentes por funcionalidade; perfil, experiências e projetos em dados tipados. `WorkspaceShell` reúne sidebar, menu mobile, breadcrumb, cabeçalho e área principal. Fontes locais e ícones SVG próprios, sem CDNs ou backend.
 
-| Rota | Conteúdo |
-| --- | --- |
-| `/` | Overview com perfil compacto, áreas de trabalho e atividade documentada |
-| `/incidents/` | Incident Explorer com catálogo, filtros e páginas individuais |
-| `/infrastructure/` | Infrastructure Lab com topologia interativa e inventário |
-| `/terminal/` | Interactive Terminal com comandos de portfólio e simulações locais |
-| `/projects/` | Engineering Projects com lista/detalhe nativa |
-| `/profile/` | Professional Profile com trajetória, competências, formação e contato |
+| Rota               | Conteúdo                                                                |
+| ------------------ | ----------------------------------------------------------------------- |
+| `/`                | Overview com perfil compacto, áreas de trabalho e atividade documentada |
+| `/incidents/`      | Incident Explorer com catálogo, filtros e páginas individuais           |
+| `/infrastructure/` | Infrastructure Lab com topologia interativa e inventário                |
+| `/terminal/`       | Interactive Terminal com comandos de portfólio e simulações locais      |
+| `/projects/`       | Engineering Projects com lista/detalhe nativa                           |
+| `/profile/`        | Professional Profile com trajetória, competências, formação e contato   |
 
 `src/content/routes.ts` centraliza navegação e rotas públicas. O build usa `renderToString` para gerar um HTML próprio para cada rota; React hidrata o menu no navegador. Links nativos preservam navegação direta, refresh e conteúdo sem JavaScript, sem roteador cliente nesta fase. `<details>` mantém os registros de projetos utilizáveis sem JavaScript.
 

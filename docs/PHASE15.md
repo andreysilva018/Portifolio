@@ -22,14 +22,14 @@ A landing page foi substituída por um shell de aplicação: sidebar, breadcrumb
 
 ## Rotas
 
-| URL | Conteúdo |
-| --- | --- |
-| `/` | Overview |
-| `/incidents/` | Incident Explorer — prévia |
-| `/infrastructure/` | Infrastructure Lab — prévia |
-| `/terminal/` | Interactive Terminal — prévia |
-| `/projects/` | Engineering Projects |
-| `/profile/` | Professional Profile |
+| URL                | Conteúdo                      |
+| ------------------ | ----------------------------- |
+| `/`                | Overview                      |
+| `/incidents/`      | Incident Explorer — prévia    |
+| `/infrastructure/` | Infrastructure Lab — prévia   |
+| `/terminal/`       | Interactive Terminal — prévia |
+| `/projects/`       | Engineering Projects          |
+| `/profile/`        | Professional Profile          |
 
 ## Preservação Git
 
@@ -94,13 +94,13 @@ Instruções de execução no README. Capturas em `docs/screenshots/`.
 
 ## Capturas
 
-| Página | Desktop | Mobile |
-| --- | --- | --- |
-| Overview | [Desktop](screenshots/overview-desktop.png) | [Mobile](screenshots/overview-mobile.png) |
-| Incident Explorer | [Desktop](screenshots/incidents-desktop.png) | [Mobile](screenshots/incidents-mobile.png) |
-| Infrastructure Lab | [Desktop](screenshots/infrastructure-desktop.png) | [Mobile](screenshots/infrastructure-mobile.png) |
-| Interactive Terminal | [Desktop](screenshots/terminal-desktop.png) | [Mobile](screenshots/terminal-mobile.png) |
-| Engineering Projects | [Desktop](screenshots/projects-desktop.png) | [Mobile](screenshots/projects-mobile.png) |
-| Professional Profile | [Desktop](screenshots/profile-desktop.png) | [Mobile](screenshots/profile-mobile.png) |
+| Página               | Desktop                                           | Mobile                                          |
+| -------------------- | ------------------------------------------------- | ----------------------------------------------- |
+| Overview             | [Desktop](screenshots/overview-desktop.png)       | [Mobile](screenshots/overview-mobile.png)       |
+| Incident Explorer    | [Desktop](screenshots/incidents-desktop.png)      | [Mobile](screenshots/incidents-mobile.png)      |
+| Infrastructure Lab   | [Desktop](screenshots/infrastructure-desktop.png) | [Mobile](screenshots/infrastructure-mobile.png) |
+| Interactive Terminal | [Desktop](screenshots/terminal-desktop.png)       | [Mobile](screenshots/terminal-mobile.png)       |
+| Engineering Projects | [Desktop](screenshots/projects-desktop.png)       | [Mobile](screenshots/projects-mobile.png)       |
+| Professional Profile | [Desktop](screenshots/profile-desktop.png)        | [Mobile](screenshots/profile-mobile.png)        |
 
 [Navegação lateral mobile](screenshots/navigation-mobile.png).

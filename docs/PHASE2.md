@@ -2,12 +2,12 @@
 
 O catálogo local em '/incidents/' oferece pesquisa sem distinção de acentos, filtros por categoria, tecnologia e origem, contagem de resultados e limpeza. Os links abrem páginas próprias. O desktop combina lista e detalhe. No celular, o detalhe tem uma vista dedicada e um link de volta ao catálogo.
 
-| Roteiro | URL local |
-| --- | --- |
-| CASE-002 · Falha de conectividade e reorganização de rede | /incidents/falha-conectividade-rede-corporativa/ |
-| CASE-001 · Investigação e tratamento de divergências entre estoque físico e ERP | /incidents/inconsistencia-erp/ |
-| CASE-003 · Digitalização de catálogos | /incidents/catalogos-tecnicos/ |
-| CASE-004 · Automação de boletos | /incidents/automacao-boletos/ |
+| Roteiro                                                                         | URL local                                        |
+| ------------------------------------------------------------------------------- | ------------------------------------------------ |
+| CASE-002 · Falha de conectividade e reorganização de rede                       | /incidents/falha-conectividade-rede-corporativa/ |
+| CASE-001 · Investigação e tratamento de divergências entre estoque físico e ERP | /incidents/inconsistencia-erp/                   |
+| CASE-003 · Digitalização de catálogos                                           | /incidents/catalogos-tecnicos/                   |
+| CASE-004 · Automação de boletos                                                 | /incidents/automacao-boletos/                    |
 
 Os contratos em 'src/content/incidents.ts' registram código, slug, classificação, tecnologias, origem, estado documental, sintomas, contexto, impacto opcional, hipóteses, etapas, evidências, validação e aprendizado. Causa raiz e resolução são opcionais. LAB-002 foi retirado do catálogo e do sitemap. Sua URL direta permanece disponível com noindex. CASE-002 substitui LAB-001 e separa o restabelecimento da conexão da reorganização física posterior. A topologia conceitual usa opções de rádio e detalhes nativos, funcionando também sem JavaScript. O Netlify está configurado para redirecionar a antiga URL de DNS com HTTP 301. O preview do Vite não aplica essa regra. CASE-001 é um relato profissional anonimizado, priorizado no catálogo, com seis etapas de investigação, tratativa e acompanhamento. A etapa de inventário registra uma medida avaliada. A URL anterior de ERP foi preservada. Evidências, causa raiz, desfecho e validação podem ficar ausentes.
 

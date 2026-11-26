@@ -2,12 +2,12 @@
 
 Na rota '/terminal/', o console local apresenta conteúdo do portfólio e respostas fictícias de Linux e redes. A referência de comandos faz parte do HTML inicial e funciona sem JavaScript. A sessão interativa requer JavaScript.
 
-| Grupo | Comandos |
-| --- | --- |
-| Portfólio | help, about, skills, experience, projects, lab, cases |
-| Linux | uname -a, pwd, ls, whoami, df -h, systemctl status, docker ps |
-| Redes | ping, nslookup, ip addr, traceroute |
-| Sessão | clear, reset |
+| Grupo     | Comandos                                                      |
+| --------- | ------------------------------------------------------------- |
+| Portfólio | help, about, skills, experience, projects, lab, cases         |
+| Linux     | uname -a, pwd, ls, whoami, df -h, systemctl status, docker ps |
+| Redes     | ping, nslookup, ip addr, traceroute                           |
+| Sessão    | clear, reset                                                  |
 
 ## Arquitetura
 

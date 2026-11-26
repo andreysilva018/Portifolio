@@ -14,11 +14,11 @@ scenario help resume os comandos. clear limpa a saída visual e preserva a inves
 
 ## Cenários
 
-| ID | Exemplo de sequência |
-| --- | --- |
-| external | nslookup example.com → scenario check tunnel → scenario check route → systemctl status → scenario diagnose origin |
-| lan | ip addr → ping 192.0.2.10 → systemctl status → scenario diagnose service |
-| remote | scenario check connectivity → ping 192.0.2.10 → systemctl status → scenario check access → scenario diagnose access |
+| ID       | Exemplo de sequência                                                                                                |
+| -------- | ------------------------------------------------------------------------------------------------------------------- |
+| external | nslookup example.com → scenario check tunnel → scenario check route → systemctl status → scenario diagnose origin   |
+| lan      | ip addr → ping 192.0.2.10 → systemctl status → scenario diagnose service                                            |
+| remote   | scenario check connectivity → ping 192.0.2.10 → systemctl status → scenario check access → scenario diagnose access |
 
 ## Arquitetura
 
