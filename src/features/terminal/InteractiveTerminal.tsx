@@ -2,12 +2,27 @@ import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 
 import { PageHeading } from '../../components/PageHeading';
 import { WorkspaceIcon } from '../../components/WorkspaceIcon';
 import { commands, maxInputLength } from './commands';
-import { completions } from './parser';
+import { completions, parseCommand } from './parser';
 import { newSession, submitCommand } from './session';
+import { scenarios } from './scenarios';
 import './terminal.css';
+
+const responseLabels = {
+  info: 'Portfólio', simulation: 'Resposta simulada', error: 'Orientação',
+  scenario: 'Investigação simulada', evidence: 'Evidência simulada', diagnosis: 'Feedback diagnóstico simulado',
+};
 
 export function InteractiveTerminal() {
   const [session, setSession] = useState(newSession);
+  const [pendingId, setPendingId] = useState<string | null>(null);
+  const active = session.investigation;
+  const selectedId = pendingId ?? active?.scenario.id ?? scenarios[0].id;
+  const selectedTitle = scenarios.find(item => item.id === selectedId)?.title;
+  const pending = Boolean(active && selectedId !== active.scenario.id);
+  const phase = !active ? 'Nenhum cenário ativo' : active.phase === 'confirmed' ? 'Diagnóstico confirmado' : 'Investigação em andamento';
+  const nextChecks = active?.scenario.checks.filter(([command]) => !active.observed.includes(command)).slice(0, 2) ?? [];
+  const shortcuts = !active ? ['scenario list', 'scenario help'] : active.phase === 'confirmed'
+    ? ['scenario status', 'scenario reset'] : ['scenario status', ...nextChecks.map(([command]) => command), 'scenario diagnose'];
   const [input, setInput] = useState('');
   const [historyIndex, setHistoryIndex] = useState<number | null>(null);
   const [suggestion, setSuggestion] = useState('');
@@ -20,7 +35,35 @@ export function InteractiveTerminal() {
     if (output.current) output.current.scrollTop = output.current.scrollHeight;
   }, [session]);
 
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    if (!viewport) return;
+    function keepPromptVisible() {
+      const element = field.current;
+      if (!element || document.activeElement !== element || !viewport) return;
+      if (element.getBoundingClientRect().bottom > viewport.offsetTop + viewport.height - 12) {
+        element.scrollIntoView({ block: 'center', behavior: 'instant' });
+      }
+    }
+    viewport.addEventListener('resize', keepPromptVisible);
+    return () => viewport.removeEventListener('resize', keepPromptVisible);
+  }, []);
+
+  function fillCommand(command: string) {
+    setInput(command);
+    setHistoryIndex(null);
+    setSuggestion('');
+    draft.current = '';
+    field.current?.focus();
+  }
+
   function run(value: string) {
+    const parsed = parseCommand(value);
+    if ((parsed.kind === 'allowed' && parsed.name === 'reset') ||
+        (parsed.kind === 'scenario' && (parsed.command.startsWith('scenario start ') ||
+          parsed.command === 'scenario exit' || parsed.command === 'scenario reset'))) {
+      setPendingId(null);
+    }
     setSession(previous => submitCommand(previous, value));
     setInput('');
     setHistoryIndex(null);
@@ -75,17 +118,51 @@ export function InteractiveTerminal() {
         <span className="status">Ambiente demonstrativo</span>
       </div>
       <p className="terminal-description">Os comandos educativos exibem respostas fictícias. Os comandos de portfólio consultam o conteúdo documentado.</p>
+      <section className="terminal-lab" aria-labelledby="terminal-lab-title">
+        <h3 id="terminal-lab-title">Troubleshooting Lab</h3>
+        <p>Investigue três cenários fictícios e formule um diagnóstico com base nas evidências simuladas.</p>
+        <ul className="terminal-lab-list">{scenarios.map(item => <li key={item.id}>{item.title}</li>)}</ul>
+        <div className="terminal-lab-controls">
+          <label>Cenário de investigação
+            <select value={selectedId} aria-describedby="terminal-selected-scenario"
+              onChange={event => setPendingId(event.target.value)}>
+              {scenarios.map(item => <option key={item.id} value={item.id}>{item.id}</option>)}
+            </select>
+          </label>
+          <button className="button" type="button" onClick={() => run('scenario start ' + selectedId)}>Iniciar cenário</button>
+        </div>
+        <p id="terminal-selected-scenario" className="terminal-lab-choice">
+          Seleção{pending ? ' pendente' : ''}: {selectedTitle}.
+          {pending && ' A investigação atual continua até você iniciar a seleção.'}
+        </p>
+        <p className="terminal-lab-state" aria-live="polite" aria-atomic="true">
+          <strong>Estado atual:</strong> {phase}.{active && <> Cenário ativo: {active.scenario.title}.</>}
+        </p>
+        <div className="terminal-lab-guidance">
+          <p>{!active ? 'Escolha um cenário e selecione Iniciar cenário. Use scenario list ou scenario help no console.' :
+            active.phase === 'confirmed' ? 'A justificativa permanece no histórico. Reinicie ou escolha outro cenário para investigar.' :
+            'Use scenario status para revisar as evidências. Faça as verificações do cenário antes de enviar uma hipótese.'}</p>
+          <ul className="terminal-suggestions" aria-label="Comandos sugeridos">
+            {shortcuts.map(command => <li key={command}>
+              <button type="button" className="text-link" aria-label={'Preencher ' + command}
+                onClick={() => fillCommand(command)}><code>{command}</code></button>
+            </li>)}
+          </ul>
+        </div>
+        <a className="text-link" href="/infrastructure/">Consultar arquitetura do Infrastructure Lab</a>
+      </section>
       <div className="terminal-interactive">
         <div className="terminal-controls">
           <button type="button" className="button" onClick={() => run('help')}>Ajuda</button>
           <button type="button" className="text-link" onClick={() => run('reset')}>Reiniciar sessão</button>
         </div>
+        <p className="terminal-hint">Histórico da sessão. Cada resposta registra o estado no momento da execução.</p>
         <div className="terminal-output" ref={output} tabIndex={0} role="region" aria-label="Histórico e respostas">
           {session.notice && <p className="terminal-notice">{session.notice}</p>}
           <ol>
             {session.entries.map(entry => <li key={entry.id}>
               <p className="terminal-entry"><span aria-hidden="true">$ </span>{entry.input}</p>
-              <p className="kicker">{entry.response.kind === 'simulation' ? 'Resposta simulada' : entry.response.kind === 'error' ? 'Orientação' : 'Portfólio'}</p>
+              <p className="kicker">{responseLabels[entry.response.kind]}</p>
               <pre>{entry.response.text}</pre>
               {entry.response.kind === 'info' && entry.response.links && <ul className="terminal-links">
                 {entry.response.links.map(link => <li key={link.href}><a className="text-link" href={link.href}>{link.label}</a></li>)}
@@ -106,7 +183,7 @@ export function InteractiveTerminal() {
         </form>
         <p id="terminal-shortcuts" className="terminal-hint">Enter envia, ↑ e ↓ navegam no histórico e Tab completa um prefixo único. Shift+Tab sai do campo.</p>
         {suggestion && <p className="terminal-hint">{suggestion}</p>}
-        <span className="sr-only" role="status">{suggestion || session.notice || (latest && (latest.kind === 'simulation' ? 'Resposta simulada. ' : '') + latest.text.split('\n')[0])}</span>
+        <span className="sr-only" role="status">{suggestion || session.notice || (latest && responseLabels[latest.kind] + '. ' + latest.text.split('\n')[0])}</span>
       </div>
       <noscript><p className="terminal-description">A sessão interativa requer JavaScript. Consulte os comandos abaixo.</p></noscript>
       <details className="terminal-reference">

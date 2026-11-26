@@ -1,7 +1,9 @@
+import { scenarioSyntax } from './scenarios';
 import { commands, maxInputLength, type Command, type Destination } from './commands';
 
 export type ParsedCommand =
   | { kind: 'allowed'; name: Command; destination?: Destination }
+  | { kind: 'scenario'; command: string }
   | { kind: 'blank' }
   | { kind: 'error'; message: string };
 
@@ -11,6 +13,10 @@ export function parseCommand(line: string): ParsedCommand {
   if (line.length > maxInputLength) return { kind: 'error', message: 'Digite um comando de até 160 caracteres.' };
   const input = normalized(line);
   if (!input) return { kind: 'blank' };
+  if (scenarioSyntax.includes(input)) return { kind: 'scenario', command: input };
+  if (input === 'scenario' || input.startsWith('scenario ')) {
+    return { kind: 'error', message: 'Comando de investigação não disponível. Digite scenario help.' };
+  }
   const exact = commands.find(item => item.name === input);
   if (exact) return { kind: 'allowed', name: exact.name };
 
@@ -29,7 +35,7 @@ export function parseCommand(line: string): ParsedCommand {
   return { kind: 'error', message: 'Comando desconhecido. Digite help para ver as opções disponíveis.' };
 }
 
-export function completions(line: string): Command[] {
+export function completions(line: string): string[] {
   const prefix = normalized(line);
-  return prefix ? commands.filter(item => item.name.startsWith(prefix)).map(item => item.name) : [];
+  return prefix ? [...commands.map(item => item.name), ...scenarioSyntax].filter(name => name.startsWith(prefix)) : [];
 }

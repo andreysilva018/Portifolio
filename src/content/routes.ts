@@ -38,7 +38,7 @@ export function normalizePath(path: string): string {
 export function routeMetadata(path: string) {
   if (normalizePath(path) === '/terminal/') return {
     title: 'Interactive Terminal | Andrey IT Operations',
-    description: 'Explore o perfil profissional e pratique comandos simulados de Linux e redes em um terminal educativo no navegador.',
+    description: 'Explore o perfil profissional, pratique comandos simulados de Linux e redes e investigue três cenários no Troubleshooting Lab.',
     path: '/terminal/',
   };
   if (normalizePath(path) === '/infrastructure/') return {

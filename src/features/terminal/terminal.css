@@ -25,3 +25,29 @@
 .terminal-reference dt { color: #e5ebee; }
 .terminal-reference dt span { color: var(--muted); font-size: var(--type-meta); }
 @media (prefers-reduced-motion: reduce) { .terminal-panel * { transition: none; animation: none; } }
+
+.terminal-lab { margin: 0 1rem .8rem; padding: .75rem; border: 1px solid var(--line); border-radius: 4px; background: #162830; }
+.terminal-lab h3 { font-weight: 600; }
+.terminal-lab-list { display: flex; flex-wrap: wrap; gap: .25rem .8rem; color: var(--muted); font-size: var(--type-meta); }
+.terminal-lab-controls { display: none; }
+.has-js .terminal-lab-controls { display: flex; flex-wrap: wrap; gap: .5rem; align-items: end; margin-block: .55rem; }
+.terminal-lab-controls label { display: grid; gap: .25rem; min-width: 0; }
+.terminal-lab-controls select { width: 100%; min-width: 0; min-height: 44px; border: 1px solid #5a747f; border-radius: 4px; padding: .35rem; background: #101619; color: #e5ebee; }
+.terminal-lab-state { font-size: var(--type-meta); color: var(--muted); }
+
+.terminal-lab-choice, .terminal-lab-guidance { display: none; }
+.has-js .terminal-lab-choice, .has-js .terminal-lab-guidance { display: block; }
+.terminal-lab-choice, .terminal-lab-state, .terminal-lab-guidance { margin-block: .5rem; }
+.terminal-lab-state strong { color: var(--accent); }
+.terminal-suggestions { display: flex; flex-wrap: wrap; gap: .35rem .6rem; margin-block-start: .35rem; }
+.terminal-suggestions button { min-height: 44px; padding: .25rem .45rem; border: 1px solid var(--line); border-radius: 4px; max-width: 100%; overflow-wrap: anywhere; text-align: start; }
+.terminal-output, .terminal-output pre, .terminal-suggestions li { min-width: 0; }
+.terminal-prompt input, .terminal-lab-controls select { font-size: max(16px, 1rem); }
+.terminal-prompt input { scroll-margin-block: 5rem 1rem; }
+@media (max-width: 480px) {
+  .has-js .terminal-lab-controls { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; }
+  .terminal-lab-controls .button { justify-self: start; }
+  .terminal-output { min-height: 8rem; max-height: 40svh; }
+  .terminal-output pre { line-height: 1.55; }
+  .terminal-prompt .button { padding-inline: .65rem; }
+}

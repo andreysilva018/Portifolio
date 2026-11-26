@@ -164,3 +164,23 @@ test('visible text meets WCAG AA contrast on every page', async ({ page }) => {
     expect(failures, path).toEqual([]);
   }
 });
+
+test('mobile skip link moves focus below the sticky header', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  await page.goto('/terminal/');
+  const header = page.locator('.workspace-header');
+  const heading = page.getByRole('heading', { name: 'Interactive Terminal', exact: true });
+  await page.keyboard.press('Tab');
+  const skip = page.getByRole('link', { name: 'Pular para o conteúdo' });
+  await expect(skip).toBeFocused();
+  await expect(skip).toBeInViewport();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#conteudo')).toBeFocused();
+  await expect(page).toHaveURL(/#conteudo$/);
+  const headingBox = await heading.boundingBox();
+  const headerBox = await header.boundingBox();
+  expect(headingBox?.y ?? -1).toBeGreaterThanOrEqual((headerBox?.y ?? 0) + (headerBox?.height ?? 0));
+  await page.evaluate(() => window.scrollTo({ top: 500, behavior: 'instant' }));
+  await expect.poll(async () => (await header.boundingBox())?.y).toBe(0);
+  await expect(page.getByRole('button', { name: 'Abrir navegação', exact: true })).toBeInViewport();
+});

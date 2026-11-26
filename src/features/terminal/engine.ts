@@ -2,22 +2,24 @@ import { incidents, incidentPath } from '../../content/incidents';
 import { components, inventoryGroups } from '../../content/infrastructure';
 import { experiences, profile, projects, skillGroups } from '../../content/profile';
 import { commands, linuxExamples, type Destination } from './commands';
+import { investigate, scenarioControls, type Investigation } from './scenarios';
 import { parseCommand } from './parser';
 
 type Link = { label: string; href: string };
 export type Response =
   | { kind: 'blank' | 'clear' | 'reset' }
   | { kind: 'info'; text: string; links?: readonly Link[] }
-  | { kind: 'simulation' | 'error'; text: string };
+  | { kind: 'simulation' | 'error' | 'scenario' | 'evidence' | 'diagnosis'; text: string };
 
 export function helpResponse(): Response {
-  return { kind: 'info', text: commands.map(item => item.name + ' — ' + item.description).join('\n') };
+  return { kind: 'info', text: commands.map(item => item.name + ' — ' + item.description).join('\n') + '\n\nInvestigação: ' + scenarioControls.join(' · ') };
 }
 
-export function respond(input: string): Response {
-  const parsed = parseCommand(input);
+export function respond(parsed: ReturnType<typeof parseCommand>): Response {
   if (parsed.kind === 'blank') return parsed;
   if (parsed.kind === 'error') return { kind: 'error', text: parsed.message };
+
+  if (parsed.kind === 'scenario') return { kind: 'error', text: 'Use o console de investigação.' };
 
   switch (parsed.name) {
     case 'help': return helpResponse();
@@ -56,4 +58,17 @@ function networkExample(command: 'ping' | 'nslookup' | 'traceroute', destination
     case 'nslookup': return 'Nome de exemplo: ' + target + '\nResposta DNS ilustrativa: 192.0.2.10 (endereço de documentação).';
     case 'traceroute': return 'Destino de exemplo: ' + target + '\n1  198.51.100.1\n2  203.0.113.1\n3  192.0.2.10\nSaltos fictícios. Nenhum pacote enviado.';
   }
+}
+
+export function execute(input: string, investigation: Investigation | null) {
+  const parsed = parseCommand(input);
+  if (parsed.kind === 'scenario') return investigate(investigation, parsed.command);
+  const response = respond(parsed);
+  if (investigation && response.kind === 'simulation' && parsed.kind === 'allowed') {
+    const command = parsed.destination ? parsed.name + ' ' + parsed.destination : parsed.name;
+    const defaultCheck = parsed.name === 'nslookup' ? 'nslookup example.com' :
+      parsed.name === 'ping' ? 'ping 192.0.2.10' : command;
+    return investigate(investigation, parsed.destination ? command : defaultCheck);
+  }
+  return { response, investigation };
 }

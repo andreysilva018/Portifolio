@@ -101,3 +101,10 @@ test('connectivity references and simulation notice are pre-rendered', async () 
     assert.ok(html.includes(text), text);
   }
 });
+
+test('terminal lab introduces all three scenarios in the initial HTML', async () => {
+  const html = await readFile(pageFile('/terminal/'), 'utf8');
+  for (const text of ['Troubleshooting Lab', 'Acesso externo por domínio', 'Aplicação interna pela LAN', 'Administração remota conceitual']) {
+    assert.ok(html.includes(text), text);
+  }
+});
